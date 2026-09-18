@@ -13,16 +13,18 @@ import {
   Users,
 } from 'lucide-react'
 import InteractiveMap from './components/InteractiveMap'
+import CreatureDetailModal from './components/CreatureDetailModal'
 import NpcDetailModal from './components/NpcDetailModal'
 import QuestDetailModal from './components/QuestDetailModal'
 import QuestsSection from './components/QuestsSection'
-import { bestiaryEntries, type BestiaryCategory } from './data/bestiary'
+import { bestiaryEntries, type BestiaryCategory, type BestiaryEntry } from './data/bestiary'
 import { guideSteps } from './data/guide'
 import { locations } from './data/locations'
 import { npcEntries, type NpcCategory, type NpcEntry } from './data/npcs'
 import { officialMediaCards, officialJapanPageUrl, officialSectionBanners } from './data/officialSite'
 import { officialScreenshots, remakeFeatures } from './data/remake'
 import { questEntries, type QuestEntry } from './data/quests'
+import { focusMapLocation } from './utils/mapNavigation'
 
 type ThumbMap = Record<string, string>
 
@@ -137,6 +139,7 @@ function App() {
   const [npcQuery, setNpcQuery] = useState('')
   const [npcCategory, setNpcCategory] = useState<'Todos' | NpcCategory>('Todos')
   const [selectedNpc, setSelectedNpc] = useState<NpcEntry | null>(null)
+  const [selectedCreature, setSelectedCreature] = useState<BestiaryEntry | null>(null)
   const [selectedQuest, setSelectedQuest] = useState<QuestEntry | null>(null)
   const [questDone, setQuestDone] = useState<string[]>(() => {
     try {
@@ -204,6 +207,13 @@ function App() {
   const openNpcFromQuest = (npc: NpcEntry) => {
     setSelectedQuest(null)
     setSelectedNpc(npc)
+  }
+
+  const openMapLocation = (locationId: string) => {
+    setSelectedNpc(null)
+    setSelectedCreature(null)
+    setSelectedQuest(null)
+    focusMapLocation(locationId)
   }
 
   return (
@@ -354,7 +364,7 @@ function App() {
                     </span>
                     <h3>{location.name}</h3>
                     <p>{location.description}</p>
-                    <a href="#mapa">
+                    <a href="#mapa" onClick={event => { event.preventDefault(); focusMapLocation(location.id) }}>
                       Ver no mapa <ChevronRight size={15} />
                     </a>
                   </article>
@@ -452,7 +462,14 @@ function App() {
 
             <div className="encyclopedia-grid">
               {filteredBestiary.map(entry => (
-                <article className="entity-card" key={entry.id}>
+                <article
+                  className="entity-card entity-card-clickable"
+                  key={entry.id}
+                  tabIndex={0}
+                  role="button"
+                  onClick={() => setSelectedCreature(entry)}
+                  onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') setSelectedCreature(entry) }}
+                >
                   <div className="entity-media">
                     <EntityImage primary={entry.imageUrl} fallback={thumbnails[entry.pageTitle]} alt={entry.name} />
                   </div>
@@ -473,6 +490,7 @@ function App() {
                         <b>Como lidar:</b> {entry.weakness}
                       </li>
                     </ul>
+                    <button className="npc-more-button" onClick={event => { event.stopPropagation(); setSelectedCreature(entry) }}>Ver ficha e locais</button>
                   </div>
                 </article>
               ))}
@@ -660,6 +678,16 @@ function App() {
           relatedQuests={questEntries.filter(quest => quest.npcIds.includes(selectedNpc.id))}
           onClose={() => setSelectedNpc(null)}
           onOpenQuest={openQuestFromNpc}
+          onFocusLocation={openMapLocation}
+        />
+      )}
+
+      {selectedCreature && (
+        <CreatureDetailModal
+          creature={selectedCreature}
+          fallbackImage={thumbnails[selectedCreature.pageTitle]}
+          onClose={() => setSelectedCreature(null)}
+          onFocusLocation={openMapLocation}
         />
       )}
 

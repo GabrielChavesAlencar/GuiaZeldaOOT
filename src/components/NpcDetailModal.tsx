@@ -1,8 +1,9 @@
-import { Compass, ExternalLink, ScrollText, ShieldCheck, UserRound, X } from 'lucide-react'
+import { Compass, ExternalLink, MapPin, ScrollText, ShieldCheck, UserRound, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { NpcEntry } from '../data/npcs'
 import { getSpoilerFreeNpcBio } from '../data/npcProfiles'
 import type { QuestEntry } from '../data/quests'
+import { findMapLocationsByText } from '../utils/mapNavigation'
 
 type Props = {
   npc: NpcEntry
@@ -10,9 +11,10 @@ type Props = {
   relatedQuests: QuestEntry[]
   onClose: () => void
   onOpenQuest: (quest: QuestEntry) => void
+  onFocusLocation: (locationId: string) => void
 }
 
-export default function NpcDetailModal({ npc, fallbackImage, relatedQuests, onClose, onOpenQuest }: Props) {
+export default function NpcDetailModal({ npc, fallbackImage, relatedQuests, onClose, onOpenQuest, onFocusLocation }: Props) {
   const [src, setSrc] = useState(npc.imageUrl || fallbackImage || '')
   const [failed, setFailed] = useState(!(npc.imageUrl || fallbackImage))
 
@@ -34,6 +36,7 @@ export default function NpcDetailModal({ npc, fallbackImage, relatedQuests, onCl
   }, [onClose])
 
   const wikiUrl = `https://zelda.fandom.com/wiki/${encodeURIComponent(npc.pageTitle.replaceAll(' ', '_'))}`
+  const mapLocations = findMapLocationsByText(npc.location)
 
   return (
     <div className="detail-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
@@ -72,6 +75,22 @@ export default function NpcDetailModal({ npc, fallbackImage, relatedQuests, onCl
           <section className="detail-facts">
             <div><Compass size={17} /><span><b>Onde encontrar</b>{npc.location}</span></div>
             <div><UserRound size={17} /><span><b>Função</b>{npc.role}</span></div>
+          </section>
+
+          <section className="detail-block">
+            <h3><MapPin size={18} /> Encontrar no mapa</h3>
+            {mapLocations.length ? (
+              <div className="map-jump-list">
+                {mapLocations.map(location => (
+                  <button key={location.id} onClick={() => onFocusLocation(location.id)}>
+                    <span><b>{location.name}</b><small>{location.category} · {location.era}</small></span>
+                    <MapPin size={17} />
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <p className="muted-message">O local deste NPC ainda não possui um pin específico no mapa interativo.</p>
+            )}
           </section>
 
           <section className="detail-block">
