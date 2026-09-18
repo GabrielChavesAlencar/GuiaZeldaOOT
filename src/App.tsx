@@ -7,17 +7,17 @@ import {
   Compass,
   ExternalLink,
   Map,
-  ScrollText,
+  Search,
   ShieldCheck,
   Sparkles,
   Swords,
   Users,
 } from 'lucide-react'
 import InteractiveMap from './components/InteractiveMap'
-import { bestiaryEntries } from './data/bestiary'
+import { bestiaryEntries, type BestiaryCategory } from './data/bestiary'
 import { guideSteps } from './data/guide'
 import { locations } from './data/locations'
-import { npcEntries } from './data/npcs'
+import { npcEntries, type NpcCategory } from './data/npcs'
 import { officialScreenshots, remakeFeatures } from './data/remake'
 
 type ThumbMap = Record<string, string>
@@ -33,6 +33,8 @@ const sources = [
   { label: 'OoT Interactive Map', url: 'https://ootmap.com/' },
   { label: 'Zelda Wiki — Ocarina of Time', url: 'https://zelda.fandom.com/wiki/The_Legend_of_Zelda:_Ocarina_of_Time' },
   { label: 'Zelda Wiki — Locations in Ocarina of Time', url: 'https://zelda.fandom.com/wiki/Locations_in_Ocarina_of_Time' },
+  { label: 'Zelda Central — Bestiário de Ocarina of Time', url: 'https://pt.zeldacentral.com/games/ocarina-of-time/enemies/' },
+  { label: 'Zelda Wiki — Characters in Ocarina of Time', url: 'https://zelda.fandom.com/wiki/Characters_in_Ocarina_of_Time' },
   { label: 'Nintendo Brasil — Ocarina of Time (Switch 2)', url: 'https://www.nintendo.com/pt-br/store/products/the-legend-of-zelda-ocarina-of-time-switch-2/' },
   { label: 'Nintendo Portugal — Ocarina of Time (Switch 2)', url: 'https://www.nintendo.com/pt-pt/Jogos/Jogos-para-a-Nintendo-Switch-2/The-Legend-of-Zelda-Ocarina-of-Time-3115664.html' },
 ]
@@ -45,25 +47,36 @@ function useWikiThumbnails(titles: string[]) {
 
     const controller = new AbortController()
     const uniqueTitles = [...new Set(titles)]
-    const endpoint = `https://zelda.fandom.com/api.php?action=query&prop=pageimages&format=json&origin=*&pithumbsize=640&titles=${encodeURIComponent(uniqueTitles.join('|'))}`
+    const batches: string[][] = []
 
-    fetch(endpoint, { signal: controller.signal })
-      .then(response => response.json())
-      .then((data: { query?: { pages?: Record<string, WikiPage> } }) => {
-        const pages = data.query?.pages ?? {}
-        const next: ThumbMap = {}
+    for (let index = 0; index < uniqueTitles.length; index += 25) {
+      batches.push(uniqueTitles.slice(index, index + 25))
+    }
 
-        Object.values(pages).forEach(page => {
-          if (page.title && page.thumbnail?.source) {
-            next[page.title] = page.thumbnail.source
-          }
-        })
+    const load = async () => {
+      const merged: ThumbMap = {}
 
-        setThumbs(next)
-      })
-      .catch(() => {
-        // Mantém placeholders quando a API externa não responder.
-      })
+      await Promise.all(
+        batches.map(async batch => {
+          const endpoint = `https://zelda.fandom.com/api.php?action=query&prop=pageimages&format=json&origin=*&pithumbsize=640&titles=${encodeURIComponent(batch.join('|'))}`
+          const response = await fetch(endpoint, { signal: controller.signal })
+          const data: { query?: { pages?: Record<string, WikiPage> } } = await response.json()
+          const pages = data.query?.pages ?? {}
+
+          Object.values(pages).forEach(page => {
+            if (page.title && page.thumbnail?.source) {
+              merged[page.title] = page.thumbnail.source
+            }
+          })
+        }),
+      )
+
+      setThumbs(merged)
+    }
+
+    load().catch(() => {
+      // Mantém placeholders quando a API externa não responder.
+    })
 
     return () => controller.abort()
   }, [titles])
@@ -71,6 +84,35 @@ function useWikiThumbnails(titles: string[]) {
   return thumbs
 }
 
+function EntityImage({ primary, fallback, alt }: { primary?: string; fallback?: string; alt: string }) {
+  const [src, setSrc] = useState(primary || fallback || '')
+  const [failed, setFailed] = useState(!(primary || fallback))
+
+  useEffect(() => {
+    setSrc(primary || fallback || '')
+    setFailed(!(primary || fallback))
+  }, [primary, fallback])
+
+  if (failed || !src) {
+    return <div className="entity-placeholder">{alt.slice(0, 2).toUpperCase()}</div>
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      onError={() => {
+        if (fallback && src !== fallback) {
+          setSrc(fallback)
+        } else {
+          setFailed(true)
+        }
+      }}
+    />
+  )
+}
 function App() {
   const [done, setDone] = useState<string[]>(() => {
     try {
@@ -80,6 +122,10 @@ function App() {
     }
   })
   const [era, setEra] = useState<'Todas' | 'Criança' | 'Adulto'>('Todas')
+  const [bestiaryQuery, setBestiaryQuery] = useState('')
+  const [bestiaryCategory, setBestiaryCategory] = useState<'Todos' | BestiaryCategory>('Todos')
+  const [npcQuery, setNpcQuery] = useState('')
+  const [npcCategory, setNpcCategory] = useState<'Todos' | NpcCategory>('Todos')
 
   useEffect(() => {
     localStorage.setItem('oot-guide-progress', JSON.stringify(done))
@@ -95,6 +141,27 @@ function App() {
     () => guideSteps.filter(step => era === 'Todas' || step.era === era),
     [era],
   )
+
+  const bestiaryCategories: Array<'Todos' | BestiaryCategory> = ['Todos', 'Inimigo comum', 'Minichefe', 'Chefe de masmorra', 'Chefe final']
+  const npcCategories: Array<'Todos' | NpcCategory> = ['Todos', 'Principal', 'Aliado', 'Antagonista', 'Comerciante', 'Morador', 'Minijogo', 'Divindade', 'Animal', 'Grupo']
+
+  const filteredBestiary = useMemo(() => {
+    const query = bestiaryQuery.trim().toLocaleLowerCase('pt-BR')
+    return bestiaryEntries.filter(entry => {
+      const matchesCategory = bestiaryCategory === 'Todos' || entry.category === bestiaryCategory
+      const matchesQuery = !query || `${entry.name} ${entry.location} ${entry.description}`.toLocaleLowerCase('pt-BR').includes(query)
+      return matchesCategory && matchesQuery
+    })
+  }, [bestiaryCategory, bestiaryQuery])
+
+  const filteredNpcs = useMemo(() => {
+    const query = npcQuery.trim().toLocaleLowerCase('pt-BR')
+    return npcEntries.filter(entry => {
+      const matchesCategory = npcCategory === 'Todos' || entry.category === npcCategory
+      const matchesQuery = !query || `${entry.name} ${entry.role} ${entry.location} ${entry.description}`.toLocaleLowerCase('pt-BR').includes(query)
+      return matchesCategory && matchesQuery
+    })
+  }, [npcCategory, npcQuery])
 
   const completion = Math.round((done.length / guideSteps.length) * 100)
 
@@ -257,34 +324,59 @@ function App() {
           <section id="bestiario" className="encyclopedia-section">
             <div className="section-heading split-heading">
               <div>
-                <span className="eyebrow">BESTIÁRIO</span>
-                <h2>Monstros e criaturas importantes</h2>
+                <span className="eyebrow">BESTIÁRIO COMPLETO</span>
+                <h2>Inimigos, minichefes e chefes</h2>
                 <p>
-                  A seção abaixo reúne inimigos clássicos do jogo e, quando possível, prioriza o visual mais novo
-                  ligado a OOT 3D / remake.
+                  Agora o bestiário cobre a lista completa da referência da Zelda Central: inimigos comuns,
+                  minichefes, chefes de masmorra e o confronto final. As imagens vêm do material de Ocarina of Time
+                  usado pela referência; quando ela oferece um modelo de OOT 3D, ele é priorizado.
                 </p>
               </div>
               <div className="mini-panel glass-panel">
                 <Swords size={18} />
                 <div>
                   <strong>{bestiaryEntries.length} entradas</strong>
-                  <span>criaturas da aventura</span>
+                  <span>{filteredBestiary.length} visíveis com os filtros</span>
                 </div>
               </div>
             </div>
+
+            <div className="directory-toolbar glass-panel">
+              <label className="directory-search">
+                <Search size={17} />
+                <input
+                  value={bestiaryQuery}
+                  onChange={event => setBestiaryQuery(event.target.value)}
+                  placeholder="Buscar monstro, local ou descrição..."
+                />
+              </label>
+              <div className="directory-chips">
+                {bestiaryCategories.map(category => (
+                  <button
+                    key={category}
+                    className={bestiaryCategory === category ? 'chip active' : 'chip'}
+                    onClick={() => setBestiaryCategory(category)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="directory-summary">
+              <span>{filteredBestiary.length} de {bestiaryEntries.length} criaturas</span>
+              <span>Fonte de referência: Zelda Central — Ocarina of Time Enemies</span>
+            </div>
+
             <div className="encyclopedia-grid">
-              {bestiaryEntries.map(entry => (
+              {filteredBestiary.map(entry => (
                 <article className="entity-card" key={entry.id}>
                   <div className="entity-media">
-                    {thumbnails[entry.pageTitle] ? (
-                      <img src={thumbnails[entry.pageTitle]} alt={entry.name} loading="lazy" referrerPolicy="no-referrer" />
-                    ) : (
-                      <div className="entity-placeholder">{entry.name.slice(0, 2).toUpperCase()}</div>
-                    )}
+                    <EntityImage primary={entry.imageUrl} fallback={thumbnails[entry.pageTitle]} alt={entry.name} />
                   </div>
                   <div className="entity-body">
                     <div className="entity-tags">
-                      <span>{entry.group}</span>
+                      <span>{entry.category}</span>
                       <span>{entry.visual}</span>
                     </div>
                     <h3>{entry.name}</h3>
@@ -296,47 +388,75 @@ function App() {
                       </li>
                       <li>
                         <ShieldCheck size={15} />
-                        <b>Fraqueza:</b> {entry.weakness}
+                        <b>Como lidar:</b> {entry.weakness}
                       </li>
                     </ul>
                   </div>
                 </article>
               ))}
             </div>
+
+            {filteredBestiary.length === 0 && (
+              <div className="directory-empty">Nenhuma criatura encontrada com esses filtros.</div>
+            )}
           </section>
 
           <section id="npcs" className="encyclopedia-section npc-section">
             <div className="section-heading split-heading">
               <div>
-                <span className="eyebrow">PERSONAGENS</span>
-                <h2>Todos os NPCs importantes em um lugar</h2>
+                <span className="eyebrow">NPCs E PERSONAGENS</span>
+                <h2>O elenco de Ocarina of Time</h2>
                 <p>
-                  Personagens centrais, aliados e figuras marcantes para você lembrar rapidamente quem é quem em
-                  Hyrule.
+                  A lista foi ampliada com base no catálogo de personagens de Ocarina of Time, incluindo figuras
+                  principais, comerciantes, moradores, personagens de minijogos, divindades, animais e grupos.
                 </p>
               </div>
               <div className="mini-panel glass-panel">
                 <Users size={18} />
                 <div>
-                  <strong>{npcEntries.length} NPCs</strong>
-                  <span>personagens relevantes</span>
+                  <strong>{npcEntries.length} personagens</strong>
+                  <span>{filteredNpcs.length} visíveis com os filtros</span>
                 </div>
               </div>
             </div>
+
+            <div className="directory-toolbar glass-panel">
+              <label className="directory-search">
+                <Search size={17} />
+                <input
+                  value={npcQuery}
+                  onChange={event => setNpcQuery(event.target.value)}
+                  placeholder="Buscar NPC, função ou local..."
+                />
+              </label>
+              <div className="directory-chips">
+                {npcCategories.map(category => (
+                  <button
+                    key={category}
+                    className={npcCategory === category ? 'chip active' : 'chip'}
+                    onClick={() => setNpcCategory(category)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="directory-summary">
+              <span>{filteredNpcs.length} de {npcEntries.length} personagens</span>
+              <span>Inclui personagens principais e NPCs secundários/obscuros da lista de referência.</span>
+            </div>
+
             <div className="encyclopedia-grid npc-grid">
-              {npcEntries.map(entry => (
+              {filteredNpcs.map(entry => (
                 <article className="entity-card npc-card" key={entry.id}>
                   <div className="entity-media npc-media">
-                    {thumbnails[entry.pageTitle] ? (
-                      <img src={thumbnails[entry.pageTitle]} alt={entry.name} loading="lazy" referrerPolicy="no-referrer" />
-                    ) : (
-                      <div className="entity-placeholder">{entry.name.slice(0, 2).toUpperCase()}</div>
-                    )}
+                    <EntityImage fallback={thumbnails[entry.pageTitle]} alt={entry.name} />
                   </div>
                   <div className="entity-body">
                     <div className="entity-tags">
+                      <span>{entry.category}</span>
                       <span>{entry.era}</span>
-                      <span>{entry.visual}</span>
                     </div>
                     <h3>{entry.name}</h3>
                     <p>{entry.description}</p>
@@ -354,6 +474,10 @@ function App() {
                 </article>
               ))}
             </div>
+
+            {filteredNpcs.length === 0 && (
+              <div className="directory-empty">Nenhum personagem encontrado com esses filtros.</div>
+            )}
           </section>
 
           <section id="remake" className="remake-section">

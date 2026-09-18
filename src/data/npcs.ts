@@ -1,133 +1,143 @@
+export type NpcCategory =
+  | 'Principal'
+  | 'Aliado'
+  | 'Antagonista'
+  | 'Comerciante'
+  | 'Morador'
+  | 'Minijogo'
+  | 'Divindade'
+  | 'Animal'
+  | 'Grupo'
+
 export type NpcEntry = {
   id: string
   name: string
   pageTitle: string
+  category: NpcCategory
   role: string
   location: string
   era: 'Criança' | 'Adulto' | 'Ambas'
-  visual: 'Clássico' | 'OOT 3D / Remake'
   description: string
 }
 
+const npc = (
+  id: string,
+  name: string,
+  pageTitle: string,
+  category: NpcCategory,
+  role: string,
+  location: string,
+  era: NpcEntry['era'],
+  description: string,
+): NpcEntry => ({ id, name, pageTitle, category, role, location, era, description })
+
 export const npcEntries: NpcEntry[] = [
-  {
-    id: 'zelda',
-    name: 'Princesa Zelda',
-    pageTitle: 'Princess Zelda',
-    role: 'Princesa de Hyrule',
-    location: 'Castelo de Hyrule / Templo do Tempo',
-    era: 'Ambas',
-    visual: 'OOT 3D / Remake',
-    description: 'A peça central da profecia e uma das personagens mais importantes da aventura.',
-  },
-  {
-    id: 'sheik',
-    name: 'Sheik',
-    pageTitle: 'Sheik',
-    role: 'Guia misterioso',
-    location: 'Várias regiões de Hyrule',
-    era: 'Adulto',
-    visual: 'OOT 3D / Remake',
-    description: 'Acompanha a jornada adulta de Link oferecendo canções, direção e contexto.',
-  },
-  {
-    id: 'impa',
-    name: 'Impa',
-    pageTitle: 'Impa',
-    role: 'Guardião da família real',
-    location: 'Castelo de Hyrule / Kakariko',
-    era: 'Ambas',
-    visual: 'OOT 3D / Remake',
-    description: 'Responsável por proteger Zelda e ligada diretamente ao destino de Kakariko.',
-  },
-  {
-    id: 'saria',
-    name: 'Saria',
-    pageTitle: 'Saria',
-    role: 'Amiga de infância',
-    location: 'Floresta Kokiri / Bosque Sagrado',
-    era: 'Ambas',
-    visual: 'OOT 3D / Remake',
-    description: 'Uma das relações mais afetivas de Link e figura essencial da fase infantil.',
-  },
-  {
-    id: 'malon',
-    name: 'Malon',
-    pageTitle: 'Malon',
-    role: 'Cantora do Rancho Lon Lon',
-    location: 'Rancho Lon Lon',
-    era: 'Ambas',
-    visual: 'Clássico',
-    description: 'Ligada a Epona e a momentos opcionais marcantes do jogo.',
-  },
-  {
-    id: 'talon',
-    name: 'Talon',
-    pageTitle: 'Talon',
-    role: 'Dono do Rancho Lon Lon',
-    location: 'Rancho Lon Lon / Castelo de Hyrule',
-    era: 'Ambas',
-    visual: 'Clássico',
-    description: 'Pai de Malon e personagem envolvido em vários eventos paralelos.',
-  },
-  {
-    id: 'ingo',
-    name: 'Ingo',
-    pageTitle: 'Ingo',
-    role: 'Administrador do rancho',
-    location: 'Rancho Lon Lon',
-    era: 'Adulto',
-    visual: 'Clássico',
-    description: 'Antagonista local da fase adulta no rancho, ligado à obtenção de Epona.',
-  },
-  {
-    id: 'darunia',
-    name: 'Darunia',
-    pageTitle: 'Darunia',
-    role: 'Líder dos Gorons',
-    location: 'Cidade Goron / Templo do Fogo',
-    era: 'Ambas',
-    visual: 'OOT 3D / Remake',
-    description: 'Um aliado memorável de Link e peça-chave na Montanha da Morte.',
-  },
-  {
-    id: 'ruto',
-    name: 'Princesa Ruto',
-    pageTitle: 'Princess Ruto',
-    role: 'Princesa Zora',
-    location: 'Domínio Zora / Templo da Água',
-    era: 'Ambas',
-    visual: 'OOT 3D / Remake',
-    description: 'Figura importante do povo Zora, com destaque tanto na infância quanto na fase adulta.',
-  },
-  {
-    id: 'nabooru',
-    name: 'Nabooru',
-    pageTitle: 'Nabooru',
-    role: 'Guerreira Gerudo',
-    location: 'Deserto Gerudo / Templo do Espírito',
-    era: 'Ambas',
-    visual: 'OOT 3D / Remake',
-    description: 'Representa o lado nobre do povo Gerudo e ganha relevância no trecho do deserto.',
-  },
-  {
-    id: 'deku-tree',
-    name: 'Grande Árvore Deku',
-    pageTitle: 'Great Deku Tree',
-    role: 'Guardião da floresta',
-    location: 'Floresta Kokiri',
-    era: 'Criança',
-    visual: 'OOT 3D / Remake',
-    description: 'O início da profecia passa por ele, que apresenta a grande missão de Link.',
-  },
-  {
-    id: 'mask-salesman',
-    name: 'Happy Mask Salesman',
-    pageTitle: 'Happy Mask Salesman',
-    role: 'Mercador',
-    location: 'Mercado de Hyrule',
-    era: 'Criança',
-    visual: 'Clássico',
-    description: 'NPC opcional ligado a uma das side quests mais lembradas do jogo.',
-  },
+  npc('zelda', 'Princesa Zelda', 'Princess Zelda', 'Principal', 'Princesa de Hyrule', 'Castelo de Hyrule / Templo do Tempo', 'Ambas', 'Figura central da profecia, ligada à Triforce da Sabedoria e ao destino de Link.'),
+  npc('sheik', 'Sheik', 'Sheik', 'Principal', 'Guia misterioso', 'Diversas regiões de Hyrule', 'Adulto', 'Aparece durante a fase adulta para orientar Link e ensinar canções importantes.'),
+  npc('ganondorf', 'Ganondorf', 'Ganondorf', 'Antagonista', 'Rei dos Gerudo', 'Castelo de Hyrule / Castelo de Ganon', 'Ambas', 'Principal antagonista da aventura e portador da Triforce do Poder.'),
+  npc('navi', 'Navi', 'Navi', 'Principal', 'Fada companheira de Link', 'Acompanha Link por toda Hyrule', 'Ambas', 'Companheira constante que ajuda com mira, dicas e leitura de inimigos.'),
+  npc('impa', 'Impa', 'Impa', 'Principal', 'Protetora da família real', 'Castelo de Hyrule / Kakariko', 'Ambas', 'Sheikah ligada à Princesa Zelda e à história de Kakariko.'),
+  npc('rauru', 'Rauru', 'Rauru', 'Aliado', 'Sábio da Luz', 'Templo da Luz / Reino Sagrado', 'Adulto', 'Recebe Link após o salto temporal e explica sua nova missão.'),
+  npc('saria', 'Saria', 'Saria', 'Aliado', 'Amiga de Link / Sábia da Floresta', 'Floresta Kokiri / Bosque Sagrado', 'Ambas', 'Amiga de infância de Link e personagem essencial do arco da floresta.'),
+  npc('darunia', 'Darunia', 'Darunia', 'Aliado', 'Líder dos Gorons / Sábio do Fogo', 'Cidade Goron / Templo do Fogo', 'Ambas', 'Líder carismático dos Gorons e aliado importante de Link.'),
+  npc('ruto', 'Princesa Ruto', 'Princess Ruto', 'Aliado', 'Princesa Zora / Sábia da Água', 'Domínio Zora / Templo da Água', 'Ambas', 'Princesa dos Zora, encontrada ainda criança dentro de Jabu-Jabu.'),
+  npc('nabooru', 'Nabooru', 'Nabooru', 'Aliado', 'Guerreira Gerudo / Sábia do Espírito', 'Deserto Gerudo / Templo do Espírito', 'Ambas', 'Gerudo que se opõe a Ganondorf e se torna uma das Sábias.'),
+
+  npc('great-deku-tree', 'Grande Árvore Deku', 'Great Deku Tree', 'Aliado', 'Guardião da floresta', 'Floresta Kokiri', 'Criança', 'Guardião dos Kokiri e responsável por iniciar a grande jornada de Link.'),
+  npc('deku-tree-sprout', 'Broto da Árvore Deku', 'Deku Tree Sprout', 'Aliado', 'Novo guardião da floresta', 'Floresta Kokiri', 'Adulto', 'Surge depois que a maldição sobre a floresta começa a ser desfeita.'),
+  npc('kaepora', 'Kaepora Gaebora', 'Kaepora Gaebora', 'Aliado', 'Coruja guia', 'Diversas regiões', 'Criança', 'Coruja sábia que orienta Link nos primeiros passos da aventura.'),
+  npc('epona', 'Epona', 'Epona', 'Animal', 'Égua de Link', 'Rancho Lon Lon / Campo de Hyrule', 'Ambas', 'Montaria de Link e peça-chave para exploração rápida na fase adulta.'),
+  npc('malon', 'Malon', 'Malon', 'Aliado', 'Moradora do Rancho Lon Lon', 'Rancho Lon Lon', 'Ambas', 'Ligada a Epona e a vários eventos opcionais do rancho.'),
+  npc('talon', 'Talon', 'Talon', 'Morador', 'Dono do Rancho Lon Lon', 'Rancho Lon Lon / Castelo de Hyrule', 'Ambas', 'Pai de Malon e personagem recorrente em eventos do rancho.'),
+  npc('ingo', 'Ingo', 'Ingo', 'Antagonista', 'Administrador do rancho', 'Rancho Lon Lon', 'Ambas', 'Assume o controle do rancho na fase adulta e participa da sequência de Epona.'),
+
+  npc('king-zora', 'Rei Zora', 'King Zora', 'Aliado', 'Rei dos Zora', 'Domínio Zora', 'Ambas', 'Pai de Ruto e governante do povo Zora.'),
+  npc('jabu-jabu', 'Lord Jabu-Jabu', 'Lord Jabu-Jabu', 'Divindade', 'Guardião dos Zora', 'Fonte Zora', 'Criança', 'Entidade reverenciada pelos Zora e cenário de uma das primeiras masmorras.'),
+  npc('biggoron', 'Biggoron', 'Biggoron', 'Comerciante', 'Grande ferreiro Goron', 'Topo da Montanha da Morte', 'Adulto', 'Responsável pela sequência que leva à poderosa Biggoron’s Sword.'),
+  npc('medigoron', 'Medigoron', 'Medigoron', 'Comerciante', 'Ferreiro Goron', 'Cidade Goron', 'Adulto', 'Vende a Giant’s Knife e representa a tradição dos ferreiros Goron.'),
+  npc('hot-rodder-goron', 'Hot Rodder Goron', 'Hot Rodder Goron', 'Minijogo', 'Goron corredor', 'Cidade Goron', 'Criança', 'Goron que rola em alta velocidade e pode ser parado para obter uma recompensa.'),
+  npc('goron-chief', 'Chefe Goron', 'Goron Chief', 'Morador', 'Figura Goron', 'Cidade Goron', 'Ambas', 'Personagem associado à comunidade Goron e à região da Montanha da Morte.'),
+  npc('goron-link', 'Link, o Goron', 'Link (Goron)', 'Morador', 'Jovem Goron', 'Cidade Goron', 'Adulto', 'Goron que recebeu o nome de Link e ajuda a explicar a crise do povo na fase adulta.'),
+
+  npc('mido', 'Mido', 'Mido', 'Morador', 'Líder informal Kokiri', 'Floresta Kokiri', 'Ambas', 'Kokiri orgulhoso que inicialmente bloqueia e questiona Link.'),
+  npc('fado', 'Fado', 'Fado (Ocarina of Time)', 'Morador', 'Kokiri', 'Floresta Kokiri / Bosques Perdidos', 'Ambas', 'Kokiri ligada a eventos nos Bosques Perdidos e à sequência de troca adulta.'),
+  npc('kokiri-brothers', 'Know-It-All Brothers', 'Know-It-All Brothers', 'Grupo', 'Kokiri instrutores', 'Floresta Kokiri', 'Criança', 'Grupo que ensina controles e fundamentos básicos ao jogador.'),
+  npc('skull-kid', 'Skull Kid', 'Skull Kid', 'Morador', 'Habitante dos Bosques Perdidos', 'Bosques Perdidos', 'Ambas', 'Personagem misterioso associado à música e aos Bosques Perdidos.'),
+  npc('phonogram-man', 'Phonogram Man', 'Phonogram Man', 'Morador', 'Músico', 'Floresta Kokiri', 'Criança', 'Morador ligado ao ambiente musical da floresta.'),
+
+  npc('happy-mask-salesman', 'Happy Mask Salesman', 'Happy Mask Salesman', 'Comerciante', 'Vendedor de máscaras', 'Mercado de Hyrule', 'Criança', 'Responsável pela sequência de troca e venda de máscaras.'),
+  npc('bazaar-owner', 'Dono do Bazaar', 'Bazaar Owner', 'Comerciante', 'Lojista', 'Mercado / Kakariko', 'Ambas', 'Vende equipamentos e suprimentos úteis em lojas de Hyrule.'),
+  npc('bombchu-shop-owner', 'Dono da Loja de Bombchu', 'Bombchu Shop Owner', 'Comerciante', 'Lojista', 'Mercado de Hyrule', 'Criança', 'Responsável pela loja especializada em Bombchus.'),
+  npc('bombchu-bowling', 'Operadora do Bombchu Bowling', 'Bombchu Bowling Alley Operator', 'Minijogo', 'Atendente de minijogo', 'Mercado de Hyrule', 'Criança', 'Comanda o Bombchu Bowling Alley e distribui prêmios.'),
+  npc('shooting-gallery-owner', 'Dono da Galeria de Tiro', 'Shooting Gallery Owner', 'Minijogo', 'Atendente de minijogo', 'Mercado / Kakariko', 'Ambas', 'Administra desafios de tiro que rendem melhorias importantes.'),
+  npc('running-man', 'Running Man', 'Running Man', 'Minijogo', 'Corredor', 'Campo de Hyrule / Vale Gerudo', 'Adulto', 'Personagem associado a uma corrida opcional na fase adulta.'),
+  npc('blue-juggler', 'Malabarista Azul', 'Blue Juggler', 'Morador', 'Artista de rua', 'Mercado de Hyrule', 'Criança', 'Um dos artistas encontrados na praça do mercado.'),
+  npc('red-juggler', 'Malabarista Vermelho', 'Red Juggler', 'Morador', 'Artista de rua', 'Mercado de Hyrule', 'Criança', 'Forma dupla com o outro malabarista do mercado.'),
+  npc('twin-jugglers', 'Malabaristas Gêmeos', 'Twin Jugglers', 'Grupo', 'Artistas de rua', 'Mercado de Hyrule', 'Criança', 'Dupla de artistas que ajuda a dar vida à praça do mercado.'),
+  npc('dancing-couple', 'Casal Dançarino', 'Dancing Couple', 'Morador', 'Moradores do mercado', 'Mercado de Hyrule', 'Criança', 'Casal que dança na praça em meio à rotina da cidade.'),
+  npc('darling', 'Darling', 'Darling', 'Morador', 'Morador de Hyrule', 'Mercado de Hyrule', 'Criança', 'Um dos personagens civis presentes na vida cotidiana do mercado.'),
+  npc('honey', 'Honey', 'Honey', 'Morador', 'Moradora de Hyrule', 'Mercado de Hyrule', 'Criança', 'Personagem civil associada à movimentação do Mercado de Hyrule.'),
+  npc('young-punk', 'Young Punk Guy', 'Young Punk Guy', 'Morador', 'Morador do mercado', 'Mercado de Hyrule', 'Criança', 'Jovem encontrado entre os habitantes da cidade.'),
+  npc('man-carrying-sack', 'Homem com Saco', 'Man Carrying Sack', 'Morador', 'Trabalhador', 'Mercado de Hyrule', 'Criança', 'Morador visto carregando mercadorias pela cidade.'),
+  npc('man-on-roof', 'Homem no Telhado', 'Man on a Roof', 'Morador', 'Morador de Kakariko', 'Kakariko', 'Ambas', 'NPC encontrado em posição elevada na vila e ligado à exploração vertical.'),
+  npc('pooch-lady', 'Dona do Cachorro', 'Pooch Lady', 'Morador', 'Moradora do mercado', 'Mercado de Hyrule', 'Criança', 'Proprietária de um cachorro perdido em uma pequena tarefa opcional.'),
+  npc('richard', 'Richard', 'Richard (Ocarina of Time)', 'Animal', 'Cachorro', 'Mercado de Hyrule', 'Criança', 'Cachorro ligado à pequena missão da Pooch Lady.'),
+
+  npc('cucco-lady', 'Cucco Lady', 'Cucco Lady', 'Morador', 'Criadora de Cuccos', 'Kakariko', 'Ambas', 'NPC associada a Cuccos e a uma sequência de troca importante.'),
+  npc('dampe', 'Dampé', 'Dampé', 'Minijogo', 'Coveiro', 'Cemitério de Kakariko', 'Ambas', 'Coveiro ligado a minijogos, túmulos e à obtenção do Hookshot.'),
+  npc('graveyard-boy', 'Menino do Cemitério', 'Graveyard Boy', 'Morador', 'Morador de Kakariko', 'Cemitério de Kakariko', 'Criança', 'Criança encontrada no cemitério durante o dia.'),
+  npc('windmill-man', 'Homem do Moinho', 'Windmill Man', 'Morador', 'Músico do moinho', 'Moinho de Kakariko', 'Ambas', 'Personagem ligado diretamente à Song of Storms e a um paradoxo temporal.'),
+  npc('professor-shikashi', 'Professor Shikashi', 'Professor Shikashi', 'Morador', 'Ancião de Kakariko', 'Kakariko', 'Ambas', 'Morador idoso que conhece histórias e informações da vila.'),
+  npc('cursed-rich-man', 'Homem Rico Amaldiçoado', 'Cursed Rich Man', 'Morador', 'Morador amaldiçoado', 'Casa da Skulltula', 'Ambas', 'Chefe da família afetada pela maldição das Gold Skulltulas.'),
+  npc('medicine-owner', 'Dona da Loja de Poções', 'Medicine Shop Owner', 'Comerciante', 'Alquimista', 'Kakariko', 'Adulto', 'Vende remédios e participa da sequência de troca adulta.'),
+  npc('granny', 'Granny', 'Granny', 'Comerciante', 'Alquimista', 'Kakariko', 'Adulto', 'Anciã associada à Odd Potion na sequência da Biggoron’s Sword.'),
+  npc('death-mountain-gatekeeper', 'Guarda da Trilha da Montanha', 'Death Mountain Trail Gatekeeper', 'Morador', 'Guarda', 'Entrada da Trilha da Montanha da Morte', 'Criança', 'Controla o acesso inicial à Montanha da Morte.'),
+  npc('royal-guard', 'Guarda Real', 'Royal Guard', 'Grupo', 'Guarda do reino', 'Castelo de Hyrule / Mercado', 'Criança', 'Guardas que protegem áreas restritas da família real.'),
+  npc('soldier', 'Soldado', 'Soldier', 'Grupo', 'Soldado de Hyrule', 'Castelo / Mercado', 'Criança', 'Soldados encontrados em postos e áreas relacionadas ao castelo.'),
+  npc('hylian-knight', 'Cavaleiro Hylian', 'Hylian Knight', 'Grupo', 'Cavaleiro de Hyrule', 'Castelo de Hyrule', 'Criança', 'Membro das forças militares do reino.'),
+
+  npc('fishing-hole-man', 'Dono do Fishing Pond', 'Fishing Hole Man', 'Minijogo', 'Atendente de pesca', 'Lago Hylia', 'Ambas', 'Administra o minijogo de pesca e entrega recompensas por grandes capturas.'),
+  npc('lake-scientist', 'Cientista do Lago', 'Lake Scientist', 'Morador', 'Pesquisador', 'Laboratório do Lago Hylia', 'Ambas', 'Pesquisador associado a testes de mergulho e ao ambiente do lago.'),
+  npc('bonooru', 'Bonooru', 'Bonooru', 'Morador', 'Espantalho', 'Lago Hylia', 'Ambas', 'Um dos espantalhos usados para criar a Scarecrow’s Song.'),
+  npc('pierre', 'Pierre', 'Pierre', 'Morador', 'Espantalho', 'Lago Hylia / pontos de invocação', 'Ambas', 'Pode ser invocado em pontos específicos depois que a canção do espantalho é criada.'),
+
+  npc('bean-seller', 'Vendedor de Feijões', 'Bean Seller', 'Comerciante', 'Vendedor de Magic Beans', 'Rio Zora', 'Criança', 'Vende Magic Beans que criam rotas especiais na fase adulta.'),
+  npc('frogs', 'Fabulous Five Froggish Tenors', 'Fabulous Five Froggish Tenors', 'Grupo', 'Quinteto de sapos', 'Rio Zora', 'Criança', 'Grupo musical ligado a canções e recompensas opcionais.'),
+  npc('blue-frog', 'Sapo Azul', 'Blue Frog', 'Animal', 'Membro do quinteto', 'Rio Zora', 'Criança', 'Um dos sapos do grupo musical do Rio Zora.'),
+  npc('green-frog', 'Sapo Verde', 'Green Frog', 'Animal', 'Membro do quinteto', 'Rio Zora', 'Criança', 'Um dos sapos do grupo musical do Rio Zora.'),
+  npc('pink-frog', 'Sapo Rosa', 'Pink Frog', 'Animal', 'Membro do quinteto', 'Rio Zora', 'Criança', 'Um dos sapos do grupo musical do Rio Zora.'),
+  npc('white-frog', 'Sapo Branco', 'White Frog', 'Animal', 'Membro do quinteto', 'Rio Zora', 'Criança', 'Um dos sapos do grupo musical do Rio Zora.'),
+  npc('yellow-frog', 'Sapo Amarelo', 'Yellow Frog', 'Animal', 'Membro do quinteto', 'Rio Zora', 'Criança', 'Um dos sapos do grupo musical do Rio Zora.'),
+
+  npc('carpenters-boss', 'Chefe dos Carpinteiros', "Carpenters' Boss", 'Morador', 'Mestre dos carpinteiros', 'Kakariko / Vale Gerudo', 'Ambas', 'Chefe do grupo de carpinteiros e pai do jovem ligado à sequência de troca.'),
+  npc('master-craftsman', 'Master Craftsman', 'Master Craftsman', 'Morador', 'Artesão', 'Kakariko', 'Ambas', 'Artesão ligado aos carpinteiros e à história de seu filho.'),
+  npc('craftsman-son', 'Filho do Master Craftsman', "Master Craftsman's Son", 'Morador', 'Jovem perdido', 'Kakariko / Bosques Perdidos', 'Adulto', 'Participa da sequência de troca da Biggoron’s Sword.'),
+  npc('ichiro', 'Ichiro', 'Ichiro', 'Morador', 'Carpinteiro', 'Fortaleza Gerudo', 'Adulto', 'Um dos carpinteiros capturados pelas Gerudo.'),
+  npc('jiro', 'Jiro', 'Jiro', 'Morador', 'Carpinteiro', 'Fortaleza Gerudo', 'Adulto', 'Um dos carpinteiros presos na fortaleza.'),
+  npc('saburo', 'Saburo', 'Saburo', 'Morador', 'Carpinteiro', 'Fortaleza Gerudo', 'Adulto', 'Um dos carpinteiros que Link precisa libertar.'),
+  npc('shiro', 'Shiro', 'Shiro', 'Morador', 'Carpinteiro', 'Fortaleza Gerudo', 'Adulto', 'Um dos carpinteiros mantidos prisioneiros pelas Gerudo.'),
+
+  npc('gerudo-warrior', 'Gerudo Warrior', 'Gerudo Warrior', 'Grupo', 'Guerreira Gerudo', 'Fortaleza Gerudo', 'Adulto', 'Representa as guerreiras que patrulham e protegem a fortaleza.'),
+  npc('nabooru-second', 'Segunda em Comando de Nabooru', "Nabooru's Second-in-Command", 'Aliado', 'Gerudo de alta patente', 'Fortaleza Gerudo', 'Adulto', 'Figura de liderança entre as Gerudo ligadas a Nabooru.'),
+  npc('carpet-merchant', 'Carpet Merchant', 'Carpet Merchant', 'Comerciante', 'Mercador do deserto', 'Deserto Assombrado', 'Adulto', 'Mercador encontrado em um tapete voador no deserto.'),
+  npc('kotake', 'Kotake', 'Kotake', 'Antagonista', 'Bruxa do gelo', 'Templo do Espírito', 'Ambas', 'Uma das bruxas Gerudo que servem Ganondorf e formam Twinrova.'),
+  npc('koume', 'Koume', 'Koume', 'Antagonista', 'Bruxa do fogo', 'Templo do Espírito', 'Ambas', 'Irmã de Kotake e metade da dupla Twinrova.'),
+  npc('twinrova', 'Twinrova', 'Twinrova', 'Antagonista', 'Forma combinada de Kotake e Koume', 'Templo do Espírito', 'Adulto', 'Fusão das duas bruxas e chefe do Templo do Espírito.'),
+
+  npc('poe-collector', 'Poe Collector', 'Poe Collector', 'Comerciante', 'Colecionador de Poes', 'Mercado destruído', 'Adulto', 'Compra Big Poes e recompensa Link pelo progresso na coleta.'),
+  npc('buyer', 'Buyer', 'Buyer', 'Comerciante', 'Comprador', 'Hyrule', 'Ambas', 'NPC associado a trocas e compra de itens em eventos específicos.'),
+
+  npc('great-fairy-courage', 'Grande Fada da Coragem', 'Great Fairy of Courage', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede uma melhoria importante ligada à Coragem.'),
+  npc('great-fairy-magic', 'Grande Fada da Magia', 'Great Fairy of Magic', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede magia ou aprimoramentos mágicos a Link.'),
+  npc('great-fairy-power', 'Grande Fada do Poder', 'Great Fairy of Power', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede um aprimoramento ligado ao poder de Link.'),
+  npc('great-fairy-wisdom', 'Grande Fada da Sabedoria', 'Great Fairy of Wisdom', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede um aprimoramento associado à Sabedoria.'),
+  npc('din', 'Din', 'Din', 'Divindade', 'Deusa do Poder', 'Mito de criação de Hyrule', 'Ambas', 'Uma das três Golden Goddesses responsáveis pela criação de Hyrule.'),
+  npc('nayru', 'Nayru', 'Nayru', 'Divindade', 'Deusa da Sabedoria', 'Mito de criação de Hyrule', 'Ambas', 'Deusa associada à sabedoria e às leis do mundo.'),
+  npc('farore', 'Farore', 'Farore', 'Divindade', 'Deusa da Coragem', 'Mito de criação de Hyrule', 'Ambas', 'Deusa associada à coragem e à vida criada em Hyrule.'),
+
+  npc('flat', 'Flat, o Jovem', 'Flat the Younger', 'Morador', 'Compositor fantasma', 'Cemitério de Kakariko', 'Ambas', 'Um dos irmãos compositores ligados a canções e segredos reais.'),
+  npc('sharp', 'Sharp, o Ancião', 'Sharp the Elder', 'Morador', 'Compositor fantasma', 'Cemitério de Kakariko', 'Ambas', 'Irmão de Flat e figura ligada ao passado musical de Kakariko.'),
+  npc('king-hyrule', 'Rei de Hyrule', 'King of Hyrule', 'Principal', 'Rei de Hyrule', 'Castelo de Hyrule', 'Criança', 'Pai de Zelda e governante de Hyrule antes da ascensão de Ganondorf.'),
+  npc('ganondorf-horse', 'Cavalo de Ganondorf', "Ganondorf's Horse", 'Animal', 'Montaria de Ganondorf', 'Castelo de Hyrule', 'Criança', 'Montaria usada por Ganondorf em momentos importantes da história.'),
+  npc('link-mother', 'Mãe de Link', "Link's Mother", 'Morador', 'Personagem de lore', 'História anterior ao jogo', 'Criança', 'Figura mencionada na história de origem de Link e da Guerra Civil de Hyrule.'),
 ]
