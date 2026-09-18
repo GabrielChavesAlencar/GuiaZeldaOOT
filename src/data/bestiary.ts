@@ -1,0 +1,133 @@
+export type BestiaryEntry = {
+  id: string
+  name: string
+  pageTitle: string
+  group: 'Comum' | 'Mini-chefe' | 'Morto-vivo' | 'Aquático' | 'Aéreo'
+  location: string
+  visual: 'Clássico' | 'OOT 3D / Remake'
+  description: string
+  weakness: string
+}
+
+export const bestiaryEntries: BestiaryEntry[] = [
+  {
+    id: 'deku-baba',
+    name: 'Deku Baba',
+    pageTitle: 'Deku Baba',
+    group: 'Comum',
+    location: 'Floresta Kokiri, Bosques Perdidos e áreas naturais',
+    visual: 'Clássico',
+    description: 'Planta agressiva que ataca com mordidas rápidas. É um dos primeiros inimigos da aventura.',
+    weakness: 'Ataques corpo a corpo rápidos e aproximação lateral.',
+  },
+  {
+    id: 'keese',
+    name: 'Keese',
+    pageTitle: 'Keese',
+    group: 'Aéreo',
+    location: 'Cavernas, templos e passagens escuras',
+    visual: 'Clássico',
+    description: 'Morcego hostil que costuma atacar em grupo e surpreender em corredores apertados.',
+    weakness: 'Estilingue, arco e golpes rápidos com espada.',
+  },
+  {
+    id: 'skulltula',
+    name: 'Skulltula',
+    pageTitle: 'Skulltula',
+    group: 'Comum',
+    location: 'Paredes, dungeons e passagens estreitas',
+    visual: 'Clássico',
+    description: 'Aranha blindada na frente e vulnerável nas costas. Exige leitura do timing.',
+    weakness: 'Acertar a parte traseira após o giro ou usar itens para expor a fraqueza.',
+  },
+  {
+    id: 'octorok',
+    name: 'Octorok',
+    pageTitle: 'Octorok',
+    group: 'Aquático',
+    location: 'Rios, lagos rasos e campos abertos',
+    visual: 'Clássico',
+    description: 'Ataca à distância cuspindo pedras e costuma defender caminhos amplos.',
+    weakness: 'Escudo para refletir projéteis ou ataques à distância.',
+  },
+  {
+    id: 'lizalfos',
+    name: 'Lizalfos',
+    pageTitle: 'Lizalfos',
+    group: 'Mini-chefe',
+    location: 'Caverna dos Dodongos e áreas militares',
+    visual: 'OOT 3D / Remake',
+    description: 'Guerreiro ágil que pula, defende e contra-ataca. Um dos duelos mais marcantes da infância.',
+    weakness: 'Mirar com Z-target, punir saltos e janelas após ataques.',
+  },
+  {
+    id: 'dodongo',
+    name: 'Dodongo',
+    pageTitle: 'Dodongo',
+    group: 'Mini-chefe',
+    location: 'Caverna dos Dodongos e Montanha da Morte',
+    visual: 'OOT 3D / Remake',
+    description: 'Réptil blindado com fraqueza ligada a explosivos e ao ataque pela retaguarda.',
+    weakness: 'Bombas e golpes na cauda quando estiver exposto.',
+  },
+  {
+    id: 'wolfos',
+    name: 'Wolfos',
+    pageTitle: 'Wolfos',
+    group: 'Mini-chefe',
+    location: 'Bosques Perdidos, grutas e áreas amaldiçoadas',
+    visual: 'OOT 3D / Remake',
+    description: 'Predador veloz que circula Link procurando espaço para atacar pelas costas.',
+    weakness: 'Defesa firme e contra-ataque logo após o bote.',
+  },
+  {
+    id: 'redead',
+    name: 'ReDead',
+    pageTitle: 'ReDead',
+    group: 'Morto-vivo',
+    location: 'Mercado destruído, templos sombrios e tumbas',
+    visual: 'OOT 3D / Remake',
+    description: 'Monstro aterrorizante que paralisa Link com o grito antes de atacar de perto.',
+    weakness: 'Ataques rápidos antes da aproximação ou usar itens de suporte.',
+  },
+  {
+    id: 'stalfos',
+    name: 'Stalfos',
+    pageTitle: 'Stalfos',
+    group: 'Morto-vivo',
+    location: 'Templo da Floresta, Templo das Sombras e Castelo de Ganon',
+    visual: 'OOT 3D / Remake',
+    description: 'Espadachim esqueleto habilidoso que pune erros e exige duelos mais técnicos.',
+    weakness: 'Explorar janelas após a defesa ou atacar pelas costas.',
+  },
+  {
+    id: 'poe',
+    name: 'Poe',
+    pageTitle: 'Poe',
+    group: 'Morto-vivo',
+    location: 'Templo da Floresta, Campo de Hyrule e tumbas',
+    visual: 'Clássico',
+    description: 'Fantasma que some e reaparece, atrapalhando o ritmo de combate.',
+    weakness: 'Acertar no momento em que se materializa.',
+  },
+  {
+    id: 'like-like',
+    name: 'Like Like',
+    pageTitle: 'Like Like',
+    group: 'Comum',
+    location: 'Templos e corredores apertados',
+    visual: 'Clássico',
+    description: 'Criatura tubular que engole Link e pode roubar equipamentos.',
+    weakness: 'Eliminar rapidamente com ataques fortes antes de ser sugado.',
+  },
+  {
+    id: 'gibdo',
+    name: 'Gibdo',
+    pageTitle: 'Gibdo',
+    group: 'Morto-vivo',
+    location: 'Templo das Sombras e áreas amaldiçoadas',
+    visual: 'OOT 3D / Remake',
+    description: 'Múmia lenta, resistente e intimidadora, muito presente nas áreas finais do jogo.',
+    weakness: 'Ataques consistentes e controle de espaço para evitar agarrões.',
+  },
+]

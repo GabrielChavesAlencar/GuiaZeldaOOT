@@ -1,0 +1,133 @@
+export type NpcEntry = {
+  id: string
+  name: string
+  pageTitle: string
+  role: string
+  location: string
+  era: 'Criança' | 'Adulto' | 'Ambas'
+  visual: 'Clássico' | 'OOT 3D / Remake'
+  description: string
+}
+
+export const npcEntries: NpcEntry[] = [
+  {
+    id: 'zelda',
+    name: 'Princesa Zelda',
+    pageTitle: 'Princess Zelda',
+    role: 'Princesa de Hyrule',
+    location: 'Castelo de Hyrule / Templo do Tempo',
+    era: 'Ambas',
+    visual: 'OOT 3D / Remake',
+    description: 'A peça central da profecia e uma das personagens mais importantes da aventura.',
+  },
+  {
+    id: 'sheik',
+    name: 'Sheik',
+    pageTitle: 'Sheik',
+    role: 'Guia misterioso',
+    location: 'Várias regiões de Hyrule',
+    era: 'Adulto',
+    visual: 'OOT 3D / Remake',
+    description: 'Acompanha a jornada adulta de Link oferecendo canções, direção e contexto.',
+  },
+  {
+    id: 'impa',
+    name: 'Impa',
+    pageTitle: 'Impa',
+    role: 'Guardião da família real',
+    location: 'Castelo de Hyrule / Kakariko',
+    era: 'Ambas',
+    visual: 'OOT 3D / Remake',
+    description: 'Responsável por proteger Zelda e ligada diretamente ao destino de Kakariko.',
+  },
+  {
+    id: 'saria',
+    name: 'Saria',
+    pageTitle: 'Saria',
+    role: 'Amiga de infância',
+    location: 'Floresta Kokiri / Bosque Sagrado',
+    era: 'Ambas',
+    visual: 'OOT 3D / Remake',
+    description: 'Uma das relações mais afetivas de Link e figura essencial da fase infantil.',
+  },
+  {
+    id: 'malon',
+    name: 'Malon',
+    pageTitle: 'Malon',
+    role: 'Cantora do Rancho Lon Lon',
+    location: 'Rancho Lon Lon',
+    era: 'Ambas',
+    visual: 'Clássico',
+    description: 'Ligada a Epona e a momentos opcionais marcantes do jogo.',
+  },
+  {
+    id: 'talon',
+    name: 'Talon',
+    pageTitle: 'Talon',
+    role: 'Dono do Rancho Lon Lon',
+    location: 'Rancho Lon Lon / Castelo de Hyrule',
+    era: 'Ambas',
+    visual: 'Clássico',
+    description: 'Pai de Malon e personagem envolvido em vários eventos paralelos.',
+  },
+  {
+    id: 'ingo',
+    name: 'Ingo',
+    pageTitle: 'Ingo',
+    role: 'Administrador do rancho',
+    location: 'Rancho Lon Lon',
+    era: 'Adulto',
+    visual: 'Clássico',
+    description: 'Antagonista local da fase adulta no rancho, ligado à obtenção de Epona.',
+  },
+  {
+    id: 'darunia',
+    name: 'Darunia',
+    pageTitle: 'Darunia',
+    role: 'Líder dos Gorons',
+    location: 'Cidade Goron / Templo do Fogo',
+    era: 'Ambas',
+    visual: 'OOT 3D / Remake',
+    description: 'Um aliado memorável de Link e peça-chave na Montanha da Morte.',
+  },
+  {
+    id: 'ruto',
+    name: 'Princesa Ruto',
+    pageTitle: 'Princess Ruto',
+    role: 'Princesa Zora',
+    location: 'Domínio Zora / Templo da Água',
+    era: 'Ambas',
+    visual: 'OOT 3D / Remake',
+    description: 'Figura importante do povo Zora, com destaque tanto na infância quanto na fase adulta.',
+  },
+  {
+    id: 'nabooru',
+    name: 'Nabooru',
+    pageTitle: 'Nabooru',
+    role: 'Guerreira Gerudo',
+    location: 'Deserto Gerudo / Templo do Espírito',
+    era: 'Ambas',
+    visual: 'OOT 3D / Remake',
+    description: 'Representa o lado nobre do povo Gerudo e ganha relevância no trecho do deserto.',
+  },
+  {
+    id: 'deku-tree',
+    name: 'Grande Árvore Deku',
+    pageTitle: 'Great Deku Tree',
+    role: 'Guardião da floresta',
+    location: 'Floresta Kokiri',
+    era: 'Criança',
+    visual: 'OOT 3D / Remake',
+    description: 'O início da profecia passa por ele, que apresenta a grande missão de Link.',
+  },
+  {
+    id: 'mask-salesman',
+    name: 'Happy Mask Salesman',
+    pageTitle: 'Happy Mask Salesman',
+    role: 'Mercador',
+    location: 'Mercado de Hyrule',
+    era: 'Criança',
+    visual: 'Clássico',
+    description: 'NPC opcional ligado a uma das side quests mais lembradas do jogo.',
+  },
+]
