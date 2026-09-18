@@ -1,0 +1,48 @@
+import type { NpcEntry } from './npcs'
+
+const profiles: Record<string, string> = {
+  zelda: 'Zelda é a princesa de Hyrule e cresceu dentro do ambiente da família real. Desde muito jovem demonstra curiosidade, senso de responsabilidade e atenção ao que acontece no reino. Ela conhece Link ainda no começo da jornada e passa a tratá-lo como alguém em quem pode confiar. Esta descrição para aqui para não revelar como sua participação evolui.',
+  sheik: 'Sheik é uma figura misteriosa ligada à tradição Sheikah. Surge como guia em momentos importantes, fala de forma reservada e costuma ajudar Link com conhecimento, música e orientação. Sua identidade e seu papel mais profundo fazem parte das descobertas do jogo e não são revelados aqui.',
+  ganondorf: 'Ganondorf é o rei dos Gerudo e chega a Hyrule como uma figura política poderosa e ambiciosa. Seu interesse pelo poder sagrado do reino o coloca em rota de colisão com os planos de Zelda e com a jornada de Link. O guia evita qualquer detalhe sobre como esse conflito se desenvolve.',
+  navi: 'Navi é a fada escolhida para acompanhar Link. Ela funciona como parceira de viagem, chama atenção para inimigos, objetos e pessoas e também ajuda a contextualizar muitas situações. É uma das presenças mais constantes da aventura.',
+  impa: 'Impa pertence ao povo Sheikah e atua como protetora da família real. É uma guerreira experiente, ligada à história de Kakariko e uma das pessoas em quem Zelda mais confia. Detalhes posteriores de sua trajetória são mantidos em segredo.',
+  rauru: 'Rauru é um sábio ancião associado aos antigos mistérios de Hyrule. Ele conhece muito sobre o poder sagrado do reino e orienta Link quando conhecimentos antigos se tornam necessários. O guia não revela o que ocorre depois desses encontros.',
+  saria: 'Saria é uma Kokiri e uma das amigas mais próximas de Link desde a infância. Gentil e intuitiva, ela tem forte ligação com a floresta e com a música. Sua amizade com Link ajuda a dar peso emocional à saída da Floresta Kokiri, mas o restante de sua trajetória fica sem spoilers.',
+  darunia: 'Darunia é o líder dos Gorons. Orgulhoso, direto e muito ligado ao bem-estar de seu povo, ele respeita coragem e lealdade. A relação com Link começa por um problema local na Montanha da Morte e cresce a partir daí, sem que este guia revele os acontecimentos posteriores.',
+  ruto: 'Ruto é a princesa do povo Zora e filha do Rei Zora. Tem personalidade forte, fala o que pensa e aparece ligada a uma situação incomum na Fonte Zora. O guia mostra apenas seu contexto inicial e evita revelar como sua relação com Link muda ao longo da aventura.',
+  nabooru: 'Nabooru é uma guerreira Gerudo independente e respeitada. Ela não concorda com tudo que acontece entre seu povo e deixa clara sua própria visão sobre honra e poder. Seu papel posterior é uma descoberta do jogo e fica protegido contra spoilers.',
+  'great-deku-tree': 'A Grande Árvore Deku é o guardião espiritual da Floresta Kokiri. É uma presença antiga, respeitada pelos Kokiri e responsável por colocar Link diante de seu primeiro grande chamado. Qualquer consequência posterior desse encontro fica fora deste resumo.',
+  kaepora: 'Kaepora Gaebora é uma coruja sábia que aparece em vários pontos de Hyrule. Costuma oferecer explicações, conselhos de navegação e observações sobre o mundo. Ele é especialmente útil para orientar jogadores nas primeiras horas.',
+  epona: 'Epona é uma égua criada no Rancho Lon Lon e tem uma ligação especial com Malon. É arisca com estranhos, mas reage de modo diferente à música e à presença de Link. Sua participação está ligada a atividades opcionais importantes no rancho.',
+  malon: 'Malon vive no Rancho Lon Lon com seu pai, Talon. É gentil, adora cantar e possui uma forte ligação com Epona. Ela aparece em atividades opcionais ligadas ao rancho e aos cavalos, sem que seja necessário conhecer nenhum evento futuro da história.',
+  talon: 'Talon administra o Rancho Lon Lon ao lado de Malon. É bem-humorado, sonolento e participa de pequenas atividades com Cuccos e leite. Suas quests são leves e focadas no rancho, sem relação direta com spoilers da trama principal.',
+  ingo: 'Ingo trabalha no Rancho Lon Lon e leva o trabalho muito a sério. Sua personalidade contrasta bastante com a de Talon, e ele está diretamente ligado a desafios opcionais com cavalos. O que muda no rancho mais tarde não é detalhado aqui.',
+  'king-zora': 'O Rei Zora governa o Domínio Zora e é pai da Princesa Ruto. Tem uma postura cerimonial e participa de várias interações ligadas ao povo Zora, incluindo uma etapa da grande sequência de trocas da fase adulta.',
+  biggoron: 'Biggoron é um Goron gigantesco conhecido por sua habilidade como ferreiro. Vive no alto da Montanha da Morte e é a figura central de uma longa quest opcional de trocas. O resumo não antecipa o que acontece fora dessa quest.',
+  'happy-mask-salesman': 'O Happy Mask Salesman administra a loja de máscaras do Mercado de Hyrule. Seu negócio funciona de maneira diferente de uma loja normal: ele empresta máscaras para Link vender a pessoas específicas. É um personagem excêntrico e totalmente ligado a conteúdo opcional.',
+  'cucco-lady': 'A Cucco Lady vive em Kakariko e cuida de vários Cuccos. Ela oferece uma pequena tarefa de busca ainda na infância e volta a participar de uma sequência de trocas na fase adulta. Esses conteúdos são opcionais e não revelam a história principal.',
+  dampe: 'Dampé é o coveiro do Cemitério de Kakariko. Durante a noite participa de um minijogo de escavação e também está ligado a um desafio de corrida em outra fase da aventura. O guia evita explicar o contexto narrativo entre esses dois momentos.',
+  'windmill-man': 'O Homem do Moinho passa boa parte do tempo tocando seu instrumento dentro do moinho de Kakariko. Ele tem uma forte ligação com uma melodia famosa do jogo, mas os detalhes de como essa música entra na aventura são deixados para o jogador descobrir.',
+  'skull-kid': 'Skull Kid é um estranho habitante dos Bosques Perdidos, associado à música e a pequenas interações opcionais. Ele participa de minijogos e da sequência de máscaras, mas o guia não antecipa nada além dessas atividades.',
+  'poe-collector': 'O Poe Collector é um personagem peculiar interessado em espíritos capturados. Na fase adulta, ele oferece uma atividade opcional baseada em caçar Big Poes pelo Campo de Hyrule e entregar suas almas engarrafadas.',
+  'bean-seller': 'O Bean Seller fica perto do Rio Zora e vende Magic Beans. A cada compra o preço aumenta, e os feijões podem ser plantados em pontos específicos para criar oportunidades de exploração mais tarde.',
+  bonooru: 'Bonooru é um dos espantalhos do Lago Hylia. Ele gosta de música e permite que o jogador crie uma melodia personalizada, usada em uma subquest de exploração com seu amigo Pierre.',
+  pierre: 'Pierre é o segundo espantalho do Lago Hylia. Depois que uma canção personalizada é registrada corretamente, ele pode aparecer em pontos especiais para ajudar Link a alcançar lugares distantes.',
+  'fishing-hole-man': 'O atendente do Fishing Pond administra a atividade de pesca no Lago Hylia. Ele registra o peso dos peixes e entrega recompensas quando Link consegue capturas grandes o suficiente.',
+}
+
+const categoryFallback: Record<NpcEntry['category'], (npc: NpcEntry) => string> = {
+  Principal: npc => `${npc.name} é uma figura importante de Hyrule, conhecida principalmente por seu papel como ${npc.role.toLowerCase()}. Pode ser encontrado em ${npc.location}. Para preservar a descoberta da história, este perfil mostra apenas seu contexto inicial e omite mudanças, revelações e acontecimentos posteriores.`,
+  Aliado: npc => `${npc.name} é um aliado encontrado em ${npc.location}. Sua função inicial é ${npc.role.toLowerCase()}, e suas interações ajudam Link a conhecer melhor Hyrule. O perfil evita revelar qualquer mudança importante que aconteça mais tarde.`,
+  Antagonista: npc => `${npc.name} aparece como uma presença hostil ou rival ligada a ${npc.location}. Seu papel conhecido no início é ${npc.role.toLowerCase()}. Motivações mais profundas, confrontos e consequências ficam fora deste resumo para evitar spoilers.`,
+  Comerciante: npc => `${npc.name} é ${npc.role.toLowerCase()} e pode ser encontrado em ${npc.location}. Sua participação é principalmente ligada a compras, trocas ou recompensas opcionais, sem necessidade de conhecer acontecimentos da trama principal.`,
+  Morador: npc => `${npc.name} é um morador de Hyrule ligado a ${npc.location}. É conhecido como ${npc.role.toLowerCase()} e ajuda a dar vida à região por meio de diálogos, pequenas tarefas ou informações opcionais.`,
+  Minijogo: npc => `${npc.name} está ligado a um minijogo em ${npc.location}. Atua como ${npc.role.toLowerCase()} e pode oferecer desafios, pontuações ou recompensas opcionais sem interferir na história principal.`,
+  Divindade: npc => `${npc.name} é uma figura espiritual ou divina ligada à mitologia de Hyrule. Sua presença se relaciona a ${npc.location}, mas este resumo evita revelar qualquer consequência narrativa associada a ela.`,
+  Animal: npc => `${npc.name} é um animal importante encontrado em ${npc.location}. Sua ligação com Link acontece por exploração, música ou atividades opcionais, e nenhum acontecimento futuro é revelado aqui.`,
+  Grupo: npc => `${npc.name} representa um grupo encontrado em ${npc.location}. Eles ajudam a caracterizar a cultura e as atividades da região, com interações que podem incluir informações, desafios ou pequenas quests.`,
+}
+
+export function getSpoilerFreeNpcBio(npc: NpcEntry) {
+  return profiles[npc.id] ?? categoryFallback[npc.category](npc)
+}

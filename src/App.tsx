@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   BadgeInfo,
-  BookOpen,
   Check,
   ChevronRight,
   Compass,
@@ -14,12 +13,16 @@ import {
   Users,
 } from 'lucide-react'
 import InteractiveMap from './components/InteractiveMap'
+import NpcDetailModal from './components/NpcDetailModal'
+import QuestDetailModal from './components/QuestDetailModal'
+import QuestsSection from './components/QuestsSection'
 import { bestiaryEntries, type BestiaryCategory } from './data/bestiary'
 import { guideSteps } from './data/guide'
 import { locations } from './data/locations'
-import { npcEntries, type NpcCategory } from './data/npcs'
+import { npcEntries, type NpcCategory, type NpcEntry } from './data/npcs'
 import { officialMediaCards, officialJapanPageUrl, officialSectionBanners } from './data/officialSite'
 import { officialScreenshots, remakeFeatures } from './data/remake'
+import { questEntries, type QuestEntry } from './data/quests'
 
 type ThumbMap = Record<string, string>
 
@@ -42,6 +45,8 @@ const sources = [
   { label: 'Trailer do remake — YouTube', url: 'https://www.youtube.com/watch?v=Cm8DKgjHMV4' },
   { label: 'Gameplay com Eiji Aonuma — YouTube', url: 'https://www.youtube.com/watch?v=PQvD3p2yGwc' },
   { label: 'Z64Central — capturas e análise do trailer/gameplay', url: 'https://z64central.com/switch-2/' },
+  { label: 'IGN — Side Quests & Mini-Games', url: 'https://www.ign.com/wikis/the-legend-of-zelda-ocarina-of-time-3d/Side_Quests_%26_Mini-Games' },
+  { label: 'Jegged — Ocarina of Time Side Quests', url: 'https://jegged.com/Games/Legend-of-Zelda-Ocarina-of-Time/Side-Quests/' },
 ]
 
 function useWikiThumbnails(titles: string[]) {
@@ -131,10 +136,23 @@ function App() {
   const [bestiaryCategory, setBestiaryCategory] = useState<'Todos' | BestiaryCategory>('Todos')
   const [npcQuery, setNpcQuery] = useState('')
   const [npcCategory, setNpcCategory] = useState<'Todos' | NpcCategory>('Todos')
+  const [selectedNpc, setSelectedNpc] = useState<NpcEntry | null>(null)
+  const [selectedQuest, setSelectedQuest] = useState<QuestEntry | null>(null)
+  const [questDone, setQuestDone] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('oot-optional-progress') || '[]')
+    } catch {
+      return []
+    }
+  })
 
   useEffect(() => {
     localStorage.setItem('oot-guide-progress', JSON.stringify(done))
   }, [done])
+
+  useEffect(() => {
+    localStorage.setItem('oot-optional-progress', JSON.stringify(questDone))
+  }, [questDone])
 
   const wikiTitles = useMemo(
     () => [...bestiaryEntries.map(entry => entry.pageTitle), ...npcEntries.map(entry => entry.pageTitle)],
@@ -174,6 +192,20 @@ function App() {
     setDone((current: string[]) => (current.includes(id) ? current.filter((item: string) => item !== id) : [...current, id]))
   }
 
+  const toggleQuestDone = (id: string) => {
+    setQuestDone((current: string[]) => (current.includes(id) ? current.filter((item: string) => item !== id) : [...current, id]))
+  }
+
+  const openQuestFromNpc = (quest: QuestEntry) => {
+    setSelectedNpc(null)
+    setSelectedQuest(quest)
+  }
+
+  const openNpcFromQuest = (npc: NpcEntry) => {
+    setSelectedQuest(null)
+    setSelectedNpc(npc)
+  }
+
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -187,6 +219,7 @@ function App() {
         <nav>
           <a href="#mapa">Mapa</a>
           <a href="#guia">Guia</a>
+          <a href="#quests">Quests</a>
           <a href="#locais">Locais</a>
           <a href="#bestiario">Bestiário</a>
           <a href="#npcs">NPCs</a>
@@ -298,6 +331,8 @@ function App() {
               })}
             </div>
           </section>
+
+          <QuestsSection completed={questDone} onToggleComplete={toggleQuestDone} onOpenQuest={setSelectedQuest} />
 
           <section id="locais" className="locations-section">
             <div className="section-heading">
@@ -505,7 +540,16 @@ function App() {
 
             <div className="encyclopedia-grid npc-grid">
               {filteredNpcs.map(entry => (
-                <article className="entity-card npc-card" key={entry.id}>
+                <article
+                  className="entity-card npc-card npc-card-clickable"
+                  key={entry.id}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setSelectedNpc(entry)}
+                  onKeyDown={event => {
+                    if (event.key === 'Enter' || event.key === ' ') setSelectedNpc(entry)
+                  }}
+                >
                   <div className="entity-media npc-media">
                     <EntityImage primary={entry.imageUrl} fallback={thumbnails[entry.pageTitle]} alt={entry.name} />
                   </div>
@@ -527,6 +571,7 @@ function App() {
                         <b>Onde encontrar:</b> {entry.location}
                       </li>
                     </ul>
+                    <button className="npc-more-button" onClick={event => { event.stopPropagation(); setSelectedNpc(entry) }}>Ver história e quests</button>
                   </div>
                 </article>
               ))}
@@ -607,6 +652,27 @@ function App() {
         </div>
         <p>The Legend of Zelda, Ocarina of Time e marcas relacionadas pertencem aos seus respectivos detentores.</p>
       </footer>
+
+      {selectedNpc && (
+        <NpcDetailModal
+          npc={selectedNpc}
+          fallbackImage={thumbnails[selectedNpc.pageTitle]}
+          relatedQuests={questEntries.filter(quest => quest.npcIds.includes(selectedNpc.id))}
+          onClose={() => setSelectedNpc(null)}
+          onOpenQuest={openQuestFromNpc}
+        />
+      )}
+
+      {selectedQuest && (
+        <QuestDetailModal
+          quest={selectedQuest}
+          npcs={npcEntries}
+          completed={questDone.includes(selectedQuest.id)}
+          onToggleComplete={() => toggleQuestDone(selectedQuest.id)}
+          onClose={() => setSelectedQuest(null)}
+          onOpenNpc={openNpcFromQuest}
+        />
+      )}
     </div>
   )
 }
