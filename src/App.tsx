@@ -18,6 +18,7 @@ import { bestiaryEntries, type BestiaryCategory } from './data/bestiary'
 import { guideSteps } from './data/guide'
 import { locations } from './data/locations'
 import { npcEntries, type NpcCategory } from './data/npcs'
+import { officialMediaCards, officialJapanPageUrl, officialSectionBanners } from './data/officialSite'
 import { officialScreenshots, remakeFeatures } from './data/remake'
 
 type ThumbMap = Record<string, string>
@@ -37,6 +38,7 @@ const sources = [
   { label: 'Zelda Wiki — Characters in Ocarina of Time', url: 'https://zelda.fandom.com/wiki/Characters_in_Ocarina_of_Time' },
   { label: 'Nintendo Brasil — Ocarina of Time (Switch 2)', url: 'https://www.nintendo.com/pt-br/store/products/the-legend-of-zelda-ocarina-of-time-switch-2/' },
   { label: 'Nintendo Portugal — Ocarina of Time (Switch 2)', url: 'https://www.nintendo.com/pt-pt/Jogos/Jogos-para-a-Nintendo-Switch-2/The-Legend-of-Zelda-Ocarina-of-Time-3115664.html' },
+  { label: 'Nintendo Japão — página oficial completa do remake', url: officialJapanPageUrl },
 ]
 
 function useWikiThumbnails(titles: string[]) {
@@ -185,6 +187,7 @@ function App() {
           <a href="#locais">Locais</a>
           <a href="#bestiario">Bestiário</a>
           <a href="#npcs">NPCs</a>
+          <a href="#galeria-oficial">Galeria oficial</a>
           <a href="#remake">Remake</a>
           <a href="#fontes">Fontes</a>
         </nav>
@@ -204,8 +207,8 @@ function App() {
               Uma jornada completa por <em>Ocarina of Time</em>
             </h1>
             <p>
-              Agora com o mapa em alta resolução, favicon em forma de Triforce, guia principal, bestiário e uma
-              galeria de NPCs para consultar Hyrule inteira em um só lugar.
+              Agora com o mapa em alta resolução, favicon em forma de Triforce, guia principal, bestiário, galeria
+              de NPCs e uma seleção de artes oficiais do site japonês do remake para mostrar os designs mais novos.
             </p>
             <div className="hero-actions">
               <a className="primary-button" href="#mapa">
@@ -321,7 +324,48 @@ function App() {
             </div>
           </section>
 
+          <section id="galeria-oficial" className="official-gallery-section">
+            <div className="section-heading split-heading">
+              <div>
+                <span className="eyebrow">SITE OFICIAL DO REMAKE</span>
+                <h2>Galeria oficial da página japonesa</h2>
+                <p>
+                  Analisei a página oficial japonesa do remake e adicionei aqui uma seleção das artes e imagens mais
+                  interessantes para destacar os novos designs de personagens, combate e cenários de Hyrule.
+                </p>
+              </div>
+              <div className="mini-panel glass-panel">
+                <Sparkles size={18} />
+                <div>
+                  <strong>{officialMediaCards.length} artes</strong>
+                  <span>imagens oficiais da Nintendo</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="official-gallery-grid">
+              {officialMediaCards.map(card => (
+                <article className="official-card" key={card.id}>
+                  <img src={card.image} alt={card.title} loading="lazy" referrerPolicy="no-referrer" />
+                  <div className="official-card-body">
+                    <span>{card.subtitle}</span>
+                    <h3>{card.title}</h3>
+                    <p>{card.description}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
           <section id="bestiario" className="encyclopedia-section">
+            <div className="section-banner bestiary-banner">
+              <div className="section-banner-copy">
+                <span>Novos visuais oficiais</span>
+                <strong>Combate, ação e inimigos</strong>
+                <p>Usei a página japonesa para reforçar o clima visual da seção com artes oficiais do remake.</p>
+              </div>
+              <img className="section-banner-figure" src={officialSectionBanners.bestiaryFigure} alt="Arte oficial de combate de Ocarina of Time" loading="lazy" referrerPolicy="no-referrer" />
+            </div>
             <div className="section-heading split-heading">
               <div>
                 <span className="eyebrow">BESTIÁRIO COMPLETO</span>
@@ -402,6 +446,14 @@ function App() {
           </section>
 
           <section id="npcs" className="encyclopedia-section npc-section">
+            <div className="section-banner npcs-banner">
+              <div className="section-banner-copy">
+                <span>Novos visuais oficiais</span>
+                <strong>Povos, personagens e Hyrule</strong>
+                <p>Esta área agora aproveita artes promocionais da Nintendo para contextualizar os personagens do remake.</p>
+              </div>
+              <img className="section-banner-figure" src={officialSectionBanners.npcsFigure} alt="Arte oficial de personagens de Hyrule" loading="lazy" referrerPolicy="no-referrer" />
+            </div>
             <div className="section-heading split-heading">
               <div>
                 <span className="eyebrow">NPCs E PERSONAGENS</span>
