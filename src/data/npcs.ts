@@ -18,6 +18,8 @@ export type NpcEntry = {
   location: string
   era: 'Criança' | 'Adulto' | 'Ambas'
   description: string
+  visual?: 'Clássico' | 'Remake 2026'
+  imageUrl?: string
 }
 
 const npc = (
@@ -29,30 +31,32 @@ const npc = (
   location: string,
   era: NpcEntry['era'],
   description: string,
-): NpcEntry => ({ id, name, pageTitle, category, role, location, era, description })
+  imageUrl?: string,
+  visual?: NpcEntry['visual'],
+): NpcEntry => ({ id, name, pageTitle, category, role, location, era, description, imageUrl, visual })
 
 export const npcEntries: NpcEntry[] = [
-  npc('zelda', 'Princesa Zelda', 'Princess Zelda', 'Principal', 'Princesa de Hyrule', 'Castelo de Hyrule / Templo do Tempo', 'Ambas', 'Figura central da profecia, ligada à Triforce da Sabedoria e ao destino de Link.'),
-  npc('sheik', 'Sheik', 'Sheik', 'Principal', 'Guia misterioso', 'Diversas regiões de Hyrule', 'Adulto', 'Aparece durante a fase adulta para orientar Link e ensinar canções importantes.'),
-  npc('ganondorf', 'Ganondorf', 'Ganondorf', 'Antagonista', 'Rei dos Gerudo', 'Castelo de Hyrule / Castelo de Ganon', 'Ambas', 'Principal antagonista da aventura e portador da Triforce do Poder.'),
-  npc('navi', 'Navi', 'Navi', 'Principal', 'Fada companheira de Link', 'Acompanha Link por toda Hyrule', 'Ambas', 'Companheira constante que ajuda com mira, dicas e leitura de inimigos.'),
-  npc('impa', 'Impa', 'Impa', 'Principal', 'Protetora da família real', 'Castelo de Hyrule / Kakariko', 'Ambas', 'Sheikah ligada à Princesa Zelda e à história de Kakariko.'),
+  npc('zelda', 'Princesa Zelda', 'Princess Zelda', 'Principal', 'Princesa de Hyrule', 'Castelo de Hyrule / Templo do Tempo', 'Ambas', 'Figura central da profecia, ligada à Triforce da Sabedoria e ao destino de Link.', 'https://z64central.com/switch-2/hyrule-castle-switch-2-remake-zelda-2_hu_750ff04710f6f399.webp', 'Remake 2026'),
+  npc('sheik', 'Sheik', 'Sheik', 'Principal', 'Guia misterioso', 'Diversas regiões de Hyrule', 'Adulto', 'Aparece durante a fase adulta para orientar Link e ensinar canções importantes.', 'https://z64central.com/switch-2/kakariko-village-switch-2-remake-sheik-closeup_hu_54eaf578a7a2ae79.webp', 'Remake 2026'),
+  npc('ganondorf', 'Ganondorf', 'Ganondorf', 'Antagonista', 'Rei dos Gerudo', 'Castelo de Hyrule / Castelo de Ganon', 'Ambas', 'Principal antagonista da aventura e portador da Triforce do Poder.', 'https://z64central.com/switch-2/ganons-castle-switch-2-remake-ganondorf-closeup-1_hu_cbf99b05d7b275ba.webp', 'Remake 2026'),
+  npc('navi', 'Navi', 'Navi', 'Principal', 'Fada companheira de Link', 'Acompanha Link por toda Hyrule', 'Ambas', 'Companheira constante que ajuda com mira, dicas e leitura de inimigos.', 'https://z64central.com/switch-2/kokiri-forest-switch-2-remake-1_hu_c6a57dc866430243.webp', 'Remake 2026'),
+  npc('impa', 'Impa', 'Impa', 'Principal', 'Protetora da família real', 'Castelo de Hyrule / Kakariko', 'Ambas', 'Sheikah ligada à Princesa Zelda e à história de Kakariko.', 'https://z64central.com/switch-2/hyrule-castle-town-switch-2-remake-zelda-throws-ocarina_hu_93eec75415559d74.webp', 'Remake 2026'),
   npc('rauru', 'Rauru', 'Rauru', 'Aliado', 'Sábio da Luz', 'Templo da Luz / Reino Sagrado', 'Adulto', 'Recebe Link após o salto temporal e explica sua nova missão.'),
-  npc('saria', 'Saria', 'Saria', 'Aliado', 'Amiga de Link / Sábia da Floresta', 'Floresta Kokiri / Bosque Sagrado', 'Ambas', 'Amiga de infância de Link e personagem essencial do arco da floresta.'),
-  npc('darunia', 'Darunia', 'Darunia', 'Aliado', 'Líder dos Gorons / Sábio do Fogo', 'Cidade Goron / Templo do Fogo', 'Ambas', 'Líder carismático dos Gorons e aliado importante de Link.'),
-  npc('ruto', 'Princesa Ruto', 'Princess Ruto', 'Aliado', 'Princesa Zora / Sábia da Água', 'Domínio Zora / Templo da Água', 'Ambas', 'Princesa dos Zora, encontrada ainda criança dentro de Jabu-Jabu.'),
+  npc('saria', 'Saria', 'Saria', 'Aliado', 'Amiga de Link / Sábia da Floresta', 'Floresta Kokiri / Bosque Sagrado', 'Ambas', 'Amiga de infância de Link e personagem essencial do arco da floresta.', 'https://z64central.com/switch-2/kokiri-forest-switch-2-remake-saria-goodbye-2_hu_3ba2368b7a6cb9bf.webp', 'Remake 2026'),
+  npc('darunia', 'Darunia', 'Darunia', 'Aliado', 'Líder dos Gorons / Sábio do Fogo', 'Cidade Goron / Templo do Fogo', 'Ambas', 'Líder carismático dos Gorons e aliado importante de Link.', 'https://z64central.com/switch-2/goron-city-switch-2-remake-darunia_hu_b3c5b92001d68744.webp', 'Remake 2026'),
+  npc('ruto', 'Princesa Ruto', 'Princess Ruto', 'Aliado', 'Princesa Zora / Sábia da Água', 'Domínio Zora / Templo da Água', 'Ambas', 'Princesa dos Zora, encontrada ainda criança dentro de Jabu-Jabu.', 'https://z64central.com/switch-2/jabu-jabus-belly-switch-2-remake-ruto_hu_72178b245be3b870.webp', 'Remake 2026'),
   npc('nabooru', 'Nabooru', 'Nabooru', 'Aliado', 'Guerreira Gerudo / Sábia do Espírito', 'Deserto Gerudo / Templo do Espírito', 'Ambas', 'Gerudo que se opõe a Ganondorf e se torna uma das Sábias.'),
 
-  npc('great-deku-tree', 'Grande Árvore Deku', 'Great Deku Tree', 'Aliado', 'Guardião da floresta', 'Floresta Kokiri', 'Criança', 'Guardião dos Kokiri e responsável por iniciar a grande jornada de Link.'),
+  npc('great-deku-tree', 'Grande Árvore Deku', 'Great Deku Tree', 'Aliado', 'Guardião da floresta', 'Floresta Kokiri', 'Criança', 'Guardião dos Kokiri e responsável por iniciar a grande jornada de Link.', 'https://z64central.com/switch-2/great-deku-tree-switch-2-remake-1_hu_fdb67c2e629d0f3a.webp', 'Remake 2026'),
   npc('deku-tree-sprout', 'Broto da Árvore Deku', 'Deku Tree Sprout', 'Aliado', 'Novo guardião da floresta', 'Floresta Kokiri', 'Adulto', 'Surge depois que a maldição sobre a floresta começa a ser desfeita.'),
-  npc('kaepora', 'Kaepora Gaebora', 'Kaepora Gaebora', 'Aliado', 'Coruja guia', 'Diversas regiões', 'Criança', 'Coruja sábia que orienta Link nos primeiros passos da aventura.'),
-  npc('epona', 'Epona', 'Epona', 'Animal', 'Égua de Link', 'Rancho Lon Lon / Campo de Hyrule', 'Ambas', 'Montaria de Link e peça-chave para exploração rápida na fase adulta.'),
+  npc('kaepora', 'Kaepora Gaebora', 'Kaepora Gaebora', 'Aliado', 'Coruja guia', 'Diversas regiões', 'Criança', 'Coruja sábia que orienta Link nos primeiros passos da aventura.', 'https://z64central.com/switch-2/lake-hylia-switch-2-remake-owl_hu_5a7dc75677d56803.webp', 'Remake 2026'),
+  npc('epona', 'Epona', 'Epona', 'Animal', 'Égua de Link', 'Rancho Lon Lon / Campo de Hyrule', 'Ambas', 'Montaria de Link e peça-chave para exploração rápida na fase adulta.', 'https://z64central.com/switch-2/lon-lon-ranch-switch-2-remake-2_hu_6ea55e610c243ab2.webp', 'Remake 2026'),
   npc('malon', 'Malon', 'Malon', 'Aliado', 'Moradora do Rancho Lon Lon', 'Rancho Lon Lon', 'Ambas', 'Ligada a Epona e a vários eventos opcionais do rancho.'),
   npc('talon', 'Talon', 'Talon', 'Morador', 'Dono do Rancho Lon Lon', 'Rancho Lon Lon / Castelo de Hyrule', 'Ambas', 'Pai de Malon e personagem recorrente em eventos do rancho.'),
   npc('ingo', 'Ingo', 'Ingo', 'Antagonista', 'Administrador do rancho', 'Rancho Lon Lon', 'Ambas', 'Assume o controle do rancho na fase adulta e participa da sequência de Epona.'),
 
   npc('king-zora', 'Rei Zora', 'King Zora', 'Aliado', 'Rei dos Zora', 'Domínio Zora', 'Ambas', 'Pai de Ruto e governante do povo Zora.'),
-  npc('jabu-jabu', 'Lord Jabu-Jabu', 'Lord Jabu-Jabu', 'Divindade', 'Guardião dos Zora', 'Fonte Zora', 'Criança', 'Entidade reverenciada pelos Zora e cenário de uma das primeiras masmorras.'),
+  npc('jabu-jabu', 'Lord Jabu-Jabu', 'Lord Jabu-Jabu', 'Divindade', 'Guardião dos Zora', 'Fonte Zora', 'Criança', 'Entidade reverenciada pelos Zora e cenário de uma das primeiras masmorras.', 'https://z64central.com/switch-2/jabu-jabus-belly-switch-2-remake-swallow-2_hu_92df9ffd83dece00.webp', 'Remake 2026'),
   npc('biggoron', 'Biggoron', 'Biggoron', 'Comerciante', 'Grande ferreiro Goron', 'Topo da Montanha da Morte', 'Adulto', 'Responsável pela sequência que leva à poderosa Biggoron’s Sword.'),
   npc('medigoron', 'Medigoron', 'Medigoron', 'Comerciante', 'Ferreiro Goron', 'Cidade Goron', 'Adulto', 'Vende a Giant’s Knife e representa a tradição dos ferreiros Goron.'),
   npc('hot-rodder-goron', 'Hot Rodder Goron', 'Hot Rodder Goron', 'Minijogo', 'Goron corredor', 'Cidade Goron', 'Criança', 'Goron que rola em alta velocidade e pode ser parado para obter uma recompensa.'),
@@ -74,7 +78,7 @@ export const npcEntries: NpcEntry[] = [
   npc('blue-juggler', 'Malabarista Azul', 'Blue Juggler', 'Morador', 'Artista de rua', 'Mercado de Hyrule', 'Criança', 'Um dos artistas encontrados na praça do mercado.'),
   npc('red-juggler', 'Malabarista Vermelho', 'Red Juggler', 'Morador', 'Artista de rua', 'Mercado de Hyrule', 'Criança', 'Forma dupla com o outro malabarista do mercado.'),
   npc('twin-jugglers', 'Malabaristas Gêmeos', 'Twin Jugglers', 'Grupo', 'Artistas de rua', 'Mercado de Hyrule', 'Criança', 'Dupla de artistas que ajuda a dar vida à praça do mercado.'),
-  npc('dancing-couple', 'Casal Dançarino', 'Dancing Couple', 'Morador', 'Moradores do mercado', 'Mercado de Hyrule', 'Criança', 'Casal que dança na praça em meio à rotina da cidade.'),
+  npc('dancing-couple', 'Casal Dançarino', 'Dancing Couple', 'Morador', 'Moradores do mercado', 'Mercado de Hyrule', 'Criança', 'Casal que dança na praça em meio à rotina da cidade.', 'https://z64central.com/switch-2/hyrule-castle-town-switch-2-remake-market-2_hu_96361eba0b1e7ab4.webp', 'Remake 2026'),
   npc('darling', 'Darling', 'Darling', 'Morador', 'Morador de Hyrule', 'Mercado de Hyrule', 'Criança', 'Um dos personagens civis presentes na vida cotidiana do mercado.'),
   npc('honey', 'Honey', 'Honey', 'Morador', 'Moradora de Hyrule', 'Mercado de Hyrule', 'Criança', 'Personagem civil associada à movimentação do Mercado de Hyrule.'),
   npc('young-punk', 'Young Punk Guy', 'Young Punk Guy', 'Morador', 'Morador do mercado', 'Mercado de Hyrule', 'Criança', 'Jovem encontrado entre os habitantes da cidade.'),
@@ -117,20 +121,20 @@ export const npcEntries: NpcEntry[] = [
   npc('saburo', 'Saburo', 'Saburo', 'Morador', 'Carpinteiro', 'Fortaleza Gerudo', 'Adulto', 'Um dos carpinteiros que Link precisa libertar.'),
   npc('shiro', 'Shiro', 'Shiro', 'Morador', 'Carpinteiro', 'Fortaleza Gerudo', 'Adulto', 'Um dos carpinteiros mantidos prisioneiros pelas Gerudo.'),
 
-  npc('gerudo-warrior', 'Gerudo Warrior', 'Gerudo Warrior', 'Grupo', 'Guerreira Gerudo', 'Fortaleza Gerudo', 'Adulto', 'Representa as guerreiras que patrulham e protegem a fortaleza.'),
+  npc('gerudo-warrior', 'Gerudo Warrior', 'Gerudo Warrior', 'Grupo', 'Guerreira Gerudo', 'Fortaleza Gerudo', 'Adulto', 'Representa as guerreiras que patrulham e protegem a fortaleza.', 'https://z64central.com/switch-2/gerudos-fortress-switch-2-remake-gerudo_hu_18cc3d89b051df19.webp', 'Remake 2026'),
   npc('nabooru-second', 'Segunda em Comando de Nabooru', "Nabooru's Second-in-Command", 'Aliado', 'Gerudo de alta patente', 'Fortaleza Gerudo', 'Adulto', 'Figura de liderança entre as Gerudo ligadas a Nabooru.'),
   npc('carpet-merchant', 'Carpet Merchant', 'Carpet Merchant', 'Comerciante', 'Mercador do deserto', 'Deserto Assombrado', 'Adulto', 'Mercador encontrado em um tapete voador no deserto.'),
-  npc('kotake', 'Kotake', 'Kotake', 'Antagonista', 'Bruxa do gelo', 'Templo do Espírito', 'Ambas', 'Uma das bruxas Gerudo que servem Ganondorf e formam Twinrova.'),
+  npc('kotake', 'Kotake', 'Kotake', 'Antagonista', 'Bruxa do gelo', 'Templo do Espírito', 'Ambas', 'Uma das bruxas Gerudo que servem Ganondorf e formam Twinrova.', 'https://z64central.com/switch-2/spirit-temple-switch-2-remake-twinrova-1_hu_1ebd2cf387886d3a.webp', 'Remake 2026'),
   npc('koume', 'Koume', 'Koume', 'Antagonista', 'Bruxa do fogo', 'Templo do Espírito', 'Ambas', 'Irmã de Kotake e metade da dupla Twinrova.'),
-  npc('twinrova', 'Twinrova', 'Twinrova', 'Antagonista', 'Forma combinada de Kotake e Koume', 'Templo do Espírito', 'Adulto', 'Fusão das duas bruxas e chefe do Templo do Espírito.'),
+  npc('twinrova', 'Twinrova', 'Twinrova', 'Antagonista', 'Forma combinada de Kotake e Koume', 'Templo do Espírito', 'Adulto', 'Fusão das duas bruxas e chefe do Templo do Espírito.', 'https://z64central.com/switch-2/spirit-temple-switch-2-remake-twinrova-1_hu_1ebd2cf387886d3a.webp', 'Remake 2026'),
 
   npc('poe-collector', 'Poe Collector', 'Poe Collector', 'Comerciante', 'Colecionador de Poes', 'Mercado destruído', 'Adulto', 'Compra Big Poes e recompensa Link pelo progresso na coleta.'),
   npc('buyer', 'Buyer', 'Buyer', 'Comerciante', 'Comprador', 'Hyrule', 'Ambas', 'NPC associado a trocas e compra de itens em eventos específicos.'),
 
-  npc('great-fairy-courage', 'Grande Fada da Coragem', 'Great Fairy of Courage', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede uma melhoria importante ligada à Coragem.'),
-  npc('great-fairy-magic', 'Grande Fada da Magia', 'Great Fairy of Magic', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede magia ou aprimoramentos mágicos a Link.'),
-  npc('great-fairy-power', 'Grande Fada do Poder', 'Great Fairy of Power', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede um aprimoramento ligado ao poder de Link.'),
-  npc('great-fairy-wisdom', 'Grande Fada da Sabedoria', 'Great Fairy of Wisdom', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede um aprimoramento associado à Sabedoria.'),
+  npc('great-fairy-courage', 'Grande Fada da Coragem', 'Great Fairy of Courage', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede uma melhoria importante ligada à Coragem.', 'https://z64central.com/switch-2/great-fairy-fountain-switch-2-remake-1_hu_a73b5ee6d0010fd3.webp', 'Remake 2026'),
+  npc('great-fairy-magic', 'Grande Fada da Magia', 'Great Fairy of Magic', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede magia ou aprimoramentos mágicos a Link.', 'https://z64central.com/switch-2/great-fairy-fountain-switch-2-remake-1_hu_a73b5ee6d0010fd3.webp', 'Remake 2026'),
+  npc('great-fairy-power', 'Grande Fada do Poder', 'Great Fairy of Power', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede um aprimoramento ligado ao poder de Link.', 'https://z64central.com/switch-2/great-fairy-fountain-switch-2-remake-1_hu_a73b5ee6d0010fd3.webp', 'Remake 2026'),
+  npc('great-fairy-wisdom', 'Grande Fada da Sabedoria', 'Great Fairy of Wisdom', 'Divindade', 'Grande Fada', 'Fonte de Grande Fada', 'Ambas', 'Concede um aprimoramento associado à Sabedoria.', 'https://z64central.com/switch-2/great-fairy-fountain-switch-2-remake-1_hu_a73b5ee6d0010fd3.webp', 'Remake 2026'),
   npc('din', 'Din', 'Din', 'Divindade', 'Deusa do Poder', 'Mito de criação de Hyrule', 'Ambas', 'Uma das três Golden Goddesses responsáveis pela criação de Hyrule.'),
   npc('nayru', 'Nayru', 'Nayru', 'Divindade', 'Deusa da Sabedoria', 'Mito de criação de Hyrule', 'Ambas', 'Deusa associada à sabedoria e às leis do mundo.'),
   npc('farore', 'Farore', 'Farore', 'Divindade', 'Deusa da Coragem', 'Mito de criação de Hyrule', 'Ambas', 'Deusa associada à coragem e à vida criada em Hyrule.'),

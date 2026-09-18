@@ -39,6 +39,9 @@ const sources = [
   { label: 'Nintendo Brasil — Ocarina of Time (Switch 2)', url: 'https://www.nintendo.com/pt-br/store/products/the-legend-of-zelda-ocarina-of-time-switch-2/' },
   { label: 'Nintendo Portugal — Ocarina of Time (Switch 2)', url: 'https://www.nintendo.com/pt-pt/Jogos/Jogos-para-a-Nintendo-Switch-2/The-Legend-of-Zelda-Ocarina-of-Time-3115664.html' },
   { label: 'Nintendo Japão — página oficial completa do remake', url: officialJapanPageUrl },
+  { label: 'Trailer do remake — YouTube', url: 'https://www.youtube.com/watch?v=Cm8DKgjHMV4' },
+  { label: 'Gameplay com Eiji Aonuma — YouTube', url: 'https://www.youtube.com/watch?v=PQvD3p2yGwc' },
+  { label: 'Z64Central — capturas e análise do trailer/gameplay', url: 'https://z64central.com/switch-2/' },
 ]
 
 function useWikiThumbnails(titles: string[]) {
@@ -371,9 +374,9 @@ function App() {
                 <span className="eyebrow">BESTIÁRIO COMPLETO</span>
                 <h2>Inimigos, minichefes e chefes</h2>
                 <p>
-                  Agora o bestiário cobre a lista completa da referência da Zelda Central: inimigos comuns,
-                  minichefes, chefes de masmorra e o confronto final. As imagens vêm do material de Ocarina of Time
-                  usado pela referência; quando ela oferece um modelo de OOT 3D, ele é priorizado.
+                  Agora o bestiário cobre a lista completa da referência da Zelda Central e também prioriza capturas
+                  do trailer e do gameplay do remake quando o inimigo já apareceu oficialmente. Quando ainda não há
+                  visual novo confirmado, o card continua usando a melhor arte disponível do jogo clássico/OOT 3D.
                 </p>
               </div>
               <div className="mini-panel glass-panel">
@@ -459,8 +462,9 @@ function App() {
                 <span className="eyebrow">NPCs E PERSONAGENS</span>
                 <h2>O elenco de Ocarina of Time</h2>
                 <p>
-                  A lista foi ampliada com base no catálogo de personagens de Ocarina of Time, incluindo figuras
-                  principais, comerciantes, moradores, personagens de minijogos, divindades, animais e grupos.
+                  A lista foi ampliada com base no catálogo de personagens de Ocarina of Time. Para Zelda, Sheik,
+                  Ganondorf, Impa, Saria, Darunia, Ruto, Grande Árvore Deku, Kaepora Gaebora, Jabu-Jabu, Epona,
+                  Grandes Fadas e outros personagens já mostrados, o site agora prioriza capturas do remake.
                 </p>
               </div>
               <div className="mini-panel glass-panel">
@@ -503,12 +507,13 @@ function App() {
               {filteredNpcs.map(entry => (
                 <article className="entity-card npc-card" key={entry.id}>
                   <div className="entity-media npc-media">
-                    <EntityImage fallback={thumbnails[entry.pageTitle]} alt={entry.name} />
+                    <EntityImage primary={entry.imageUrl} fallback={thumbnails[entry.pageTitle]} alt={entry.name} />
                   </div>
                   <div className="entity-body">
                     <div className="entity-tags">
                       <span>{entry.category}</span>
                       <span>{entry.era}</span>
+                      {entry.visual && <span>{entry.visual}</span>}
                     </div>
                     <h3>{entry.name}</h3>
                     <p>{entry.description}</p>

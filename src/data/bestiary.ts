@@ -1,5 +1,5 @@
 export type BestiaryCategory = 'Inimigo comum' | 'Minichefe' | 'Chefe de masmorra' | 'Chefe final'
-export type BestiaryVisual = 'Clássico' | 'OOT 3D'
+export type BestiaryVisual = 'Clássico' | 'OOT 3D' | 'Remake 2026'
 
 export type BestiaryEntry = {
   id: string
@@ -15,11 +15,11 @@ export type BestiaryEntry = {
 
 export const bestiaryEntries: BestiaryEntry[] = [
   {
-    id: 'deku-baba', name: 'Deku Baba', pageTitle: 'Deku Baba', category: 'Inimigo comum', visual: 'Clássico',
+    id: 'deku-baba', name: 'Deku Baba', pageTitle: 'Deku Baba', category: 'Inimigo comum', visual: 'Remake 2026',
     location: 'Floresta Kokiri, Bosques Perdidos e primeiras masmorras',
     description: 'Planta agressiva que avança com mordidas quando Link se aproxima.',
     weakness: 'Espada e Deku Nuts; corte o caule quando houver abertura.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/OoT_Deku_Baba_Artwork.webp',
+    imageUrl: 'https://z64central.com/switch-2/great-deku-tree-switch-2-remake-baba_hu_80705289f805be27.webp',
   },
   {
     id: 'deku-scrub', name: 'Deku Scrub', pageTitle: 'Deku Scrub', category: 'Inimigo comum', visual: 'Clássico',
@@ -43,11 +43,11 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/images-54.jpg',
   },
   {
-    id: 'tektite', name: 'Tektite', pageTitle: 'Tektite', category: 'Inimigo comum', visual: 'Clássico',
+    id: 'tektite', name: 'Tektite', pageTitle: 'Tektite', category: 'Inimigo comum', visual: 'Remake 2026',
     location: 'Montanha da Morte, Lago Hylia e áreas abertas',
     description: 'Artrópode de um olho que salta de forma irregular; há versões vermelhas e azuis.',
     weakness: 'Ataques à distância ajudam a lidar com os saltos imprevisíveis.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/Tektite_Artwork_29-600x355.webp',
+    imageUrl: 'https://z64central.com/switch-2/hyrule-field-switch-2-remake-6_hu_fa5cd80513559edb.webp',
   },
   {
     id: 'peahat', name: 'Peahat', pageTitle: 'Peahat', category: 'Inimigo comum', visual: 'Clássico',
@@ -57,11 +57,11 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/Peahat_29-600x356.webp',
   },
   {
-    id: 'stalfos', name: 'Stalfos', pageTitle: 'Stalfos', category: 'Inimigo comum', visual: 'Clássico',
+    id: 'stalfos', name: 'Stalfos', pageTitle: 'Stalfos', category: 'Inimigo comum', visual: 'Remake 2026',
     location: 'Templo da Floresta, Templo das Sombras, Templo do Espírito e Castelo de Ganon',
     description: 'Cavaleiro esqueleto com espada e escudo, capaz de defender e contra-atacar.',
     weakness: 'Espere a guarda baixar, ataque pelas costas ou use Deku Nuts e bombas para criar abertura.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/images-55.jpg',
+    imageUrl: 'https://z64central.com/switch-2/forest-temple-switch-2-remake-stalfos-1_hu_df256134ca7b3f98.webp',
   },
   {
     id: 'lizalfos', name: 'Lizalfos / Dinolfos', pageTitle: 'Lizalfos', category: 'Inimigo comum', visual: 'Clássico',
@@ -148,11 +148,11 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/OoT_Blue_Bubble_Artwork.webp',
   },
   {
-    id: 'wolfos', name: 'Wolfos / White Wolfos', pageTitle: 'Wolfos', category: 'Inimigo comum', visual: 'OOT 3D',
+    id: 'wolfos', name: 'Wolfos / White Wolfos', pageTitle: 'Wolfos', category: 'Inimigo comum', visual: 'Remake 2026',
     location: 'Bosques Perdidos, grutas e áreas geladas',
     description: 'Predador veloz que circula Link e tenta encontrar espaço para atacar.',
     weakness: 'Defenda o bote e contra-ataque imediatamente depois.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/OoT3D_Wolfos_Model-451x600.webp',
+    imageUrl: 'https://z64central.com/switch-2/sacred-forest-meadow-switch-2-remake-1_hu_212ff56914419426.webp',
   },
   {
     id: 'armos', name: 'Armos', pageTitle: 'Armos', category: 'Inimigo comum', visual: 'Clássico',
@@ -162,11 +162,11 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/images-56.jpg',
   },
   {
-    id: 'beamos', name: 'Beamos', pageTitle: 'Beamos', category: 'Inimigo comum', visual: 'Clássico',
+    id: 'beamos', name: 'Beamos', pageTitle: 'Beamos', category: 'Inimigo comum', visual: 'Remake 2026',
     location: 'Diversas masmorras',
     description: 'Torre fixa com um olho que acompanha Link e dispara um raio laser.',
     weakness: 'Bombas na base ou ataques precisos no olho quando possível.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/OoT_Beamos_Model-304x600.webp',
+    imageUrl: 'https://z64central.com/switch-2/spirit-temple-switch-2-remake-1_hu_22938c59c6f3fb54.webp',
   },
   {
     id: 'shell-blade', name: 'Shell Blade', pageTitle: 'Shell Blade', category: 'Inimigo comum', visual: 'Clássico',
@@ -219,11 +219,11 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/Big_octo.webp',
   },
   {
-    id: 'iron-knuckle', name: 'Iron Knuckle', pageTitle: 'Iron Knuckle', category: 'Minichefe', visual: 'Clássico',
+    id: 'iron-knuckle', name: 'Iron Knuckle', pageTitle: 'Iron Knuckle', category: 'Minichefe', visual: 'Remake 2026',
     location: 'Templo do Espírito, Gerudo Training Ground e Castelo de Ganon',
     description: 'Cavaleiro extremamente resistente com um machado de enorme alcance.',
     weakness: 'Esquive do golpe pesado e ataque durante a recuperação.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/OoT_Iron_Knuckle_Artwork.webp',
+    imageUrl: 'https://z64central.com/switch-2/spirit-temple-switch-2-remake-iron-knuckle_hu_f779e3cb4472e797.webp',
   },
   {
     id: 'flare-dancer', name: 'Flare Dancer', pageTitle: 'Flare Dancer', category: 'Minichefe', visual: 'Clássico',
@@ -248,18 +248,18 @@ export const bestiaryEntries: BestiaryEntry[] = [
   },
 
   {
-    id: 'queen-gohma', name: 'Queen Gohma', pageTitle: 'Queen Gohma', category: 'Chefe de masmorra', visual: 'Clássico',
+    id: 'queen-gohma', name: 'Queen Gohma', pageTitle: 'Queen Gohma', category: 'Chefe de masmorra', visual: 'Remake 2026',
     location: 'Dentro da Grande Árvore Deku',
     description: 'Aracnídeo colossal de um olho e primeiro chefe principal da aventura.',
     weakness: 'Atordoe o olho quando ficar vulnerável e ataque com a espada.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/03/OoT_Gohma_Artwork-300x208.webp',
+    imageUrl: 'https://z64central.com/switch-2/great-deku-tree-switch-2-remake-gohma-2_hu_3d094d55f9962fd2.webp',
   },
   {
-    id: 'king-dodongo', name: 'King Dodongo', pageTitle: 'King Dodongo', category: 'Chefe de masmorra', visual: 'Clássico',
+    id: 'king-dodongo', name: 'King Dodongo', pageTitle: 'King Dodongo', category: 'Chefe de masmorra', visual: 'Remake 2026',
     location: 'Caverna dos Dodongos',
     description: 'Dinossauro gigantesco que cospe fogo e percorre a arena rolando.',
     weakness: 'Jogue uma bomba na boca durante a inspiração e ataque enquanto estiver caído.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/03/King_Dodongo.webp',
+    imageUrl: 'https://z64central.com/switch-2/dodongos-cavern-switch-2-remake-king-dodongo_hu_11ed2cf7efbf4f2c.webp',
   },
   {
     id: 'barinade', name: 'Barinade', pageTitle: 'Barinade', category: 'Chefe de masmorra', visual: 'Clássico',
@@ -269,18 +269,18 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/03/images-24.jpg',
   },
   {
-    id: 'phantom-ganon', name: 'Phantom Ganon', pageTitle: 'Phantom Ganon', category: 'Chefe de masmorra', visual: 'Clássico',
+    id: 'phantom-ganon', name: 'Phantom Ganon', pageTitle: 'Phantom Ganon', category: 'Chefe de masmorra', visual: 'Remake 2026',
     location: 'Templo da Floresta',
     description: 'Projeção fantasmagórica de Ganondorf que usa pinturas e magia.',
     weakness: 'Arco na fase das pinturas e rebatidas de energia na fase final.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/03/OoT_Phantom_Ganon_Artwork.webp',
+    imageUrl: 'https://z64central.com/switch-2/forest-temple-switch-2-remake-phantom-ganon_hu_79977e4bd9f85461.webp',
   },
   {
-    id: 'volvagia', name: 'Volvagia', pageTitle: 'Volvagia', category: 'Chefe de masmorra', visual: 'Clássico',
+    id: 'volvagia', name: 'Volvagia', pageTitle: 'Volvagia', category: 'Chefe de masmorra', visual: 'Remake 2026',
     location: 'Templo do Fogo',
     description: 'Dragão de lava que alterna entre os poços e ataques aéreos.',
     weakness: 'Megaton Hammer quando a cabeça sair da lava, seguido de golpes rápidos.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/03/Volvagia.webp',
+    imageUrl: 'https://z64central.com/switch-2/fire-temple-switch-2-remake-volvagia_hu_ebc2b2966bec5ee6.webp',
   },
   {
     id: 'morpha', name: 'Morpha', pageTitle: 'Morpha', category: 'Chefe de masmorra', visual: 'Clássico',
@@ -297,17 +297,17 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/03/il_570xN.1596737388_fz1h-e1743215226118.webp',
   },
   {
-    id: 'twinrova', name: 'Twinrova', pageTitle: 'Twinrova', category: 'Chefe de masmorra', visual: 'Clássico',
+    id: 'twinrova', name: 'Twinrova', pageTitle: 'Twinrova', category: 'Chefe de masmorra', visual: 'Remake 2026',
     location: 'Templo do Espírito',
     description: 'Forma combinada de Kotake e Koume, dominando fogo e gelo.',
     weakness: 'Mirror Shield para absorver e refletir os elementos corretos.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/03/400px-Twinrova-217x300.png',
+    imageUrl: 'https://z64central.com/switch-2/spirit-temple-switch-2-remake-twinrova-1_hu_1ebd2cf387886d3a.webp',
   },
   {
-    id: 'ganondorf-ganon', name: 'Ganondorf / Ganon', pageTitle: 'Ganondorf', category: 'Chefe final', visual: 'Clássico',
+    id: 'ganondorf-ganon', name: 'Ganondorf / Ganon', pageTitle: 'Ganondorf', category: 'Chefe final', visual: 'Remake 2026',
     location: 'Castelo de Ganon',
     description: 'Confronto final em duas formas: o rei Gerudo e a transformação monstruosa Ganon.',
     weakness: 'Rebata a magia, use Light Arrows e finalize a batalha com a Master Sword.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/images-51.jpg',
+    imageUrl: 'https://z64central.com/switch-2/ganons-castle-switch-2-remake-ganondorf-closeup-1_hu_cbf99b05d7b275ba.webp',
   },
 ]
