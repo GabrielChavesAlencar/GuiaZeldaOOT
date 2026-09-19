@@ -14,6 +14,8 @@ import {
 } from 'lucide-react'
 import GoldSkulltulaModal from './components/GoldSkulltulaModal'
 import GoldSkulltulasSection from './components/GoldSkulltulasSection'
+import HeartPieceModal from './components/HeartPieceModal'
+import HeartPiecesSection from './components/HeartPiecesSection'
 import InteractiveMap from './components/InteractiveMap'
 import CreatureDetailModal from './components/CreatureDetailModal'
 import NpcDetailModal from './components/NpcDetailModal'
@@ -21,6 +23,7 @@ import QuestDetailModal from './components/QuestDetailModal'
 import QuestsSection from './components/QuestsSection'
 import { bestiaryEntries, type BestiaryCategory, type BestiaryEntry } from './data/bestiary'
 import { goldSkulltulas, type SkulltulaEntry } from './data/goldSkulltulas'
+import { heartPieces, type HeartPieceEntry } from './data/heartPieces'
 import { guideSteps } from './data/guide'
 import { locations } from './data/locations'
 import { npcEntries, type NpcCategory, type NpcEntry } from './data/npcs'
@@ -55,6 +58,9 @@ const sources = [
   { label: 'Zelda Dungeon — Ocarina of Time Gold Skulltulas', url: 'https://www.zeldadungeon.net/wiki/Ocarina_of_Time_Gold_Skulltulas' },
   { label: 'Zelda Central — Gold Skulltula Locations', url: 'https://pt.zeldacentral.com/games/ocarina-of-time/gold-skulltula-locations/' },
   { label: 'IGN — Gold Skulltulas', url: 'https://www.ign.com/wikis/the-legend-of-zelda-ocarina-of-time-3d/Gold_Skulltulas' },
+  { label: 'Zelda Dungeon — Ocarina of Time Heart Pieces', url: 'https://www.zeldadungeon.net/wiki/Ocarina_of_Time_Heart_Pieces' },
+  { label: 'Zelda Central — Heart Piece Locations', url: 'https://pt.zeldacentral.com/games/ocarina-of-time/heart-pieces/' },
+  { label: 'IGN — Heart Pieces', url: 'https://www.ign.com/wikis/the-legend-of-zelda-ocarina-of-time-3d/Heart_Pieces' },
 ]
 
 function useWikiThumbnails(titles: string[]) {
@@ -148,6 +154,14 @@ function App() {
   const [selectedCreature, setSelectedCreature] = useState<BestiaryEntry | null>(null)
   const [selectedQuest, setSelectedQuest] = useState<QuestEntry | null>(null)
   const [selectedSkulltula, setSelectedSkulltula] = useState<SkulltulaEntry | null>(null)
+  const [selectedHeartPiece, setSelectedHeartPiece] = useState<HeartPieceEntry | null>(null)
+  const [heartPieceDone, setHeartPieceDone] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('oot-heart-piece-progress') || '[]')
+    } catch {
+      return []
+    }
+  })
   const [questDone, setQuestDone] = useState<string[]>(() => {
     try {
       return JSON.parse(localStorage.getItem('oot-optional-progress') || '[]')
@@ -163,6 +177,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('oot-optional-progress', JSON.stringify(questDone))
   }, [questDone])
+
+  useEffect(() => {
+    localStorage.setItem('oot-heart-piece-progress', JSON.stringify(heartPieceDone))
+  }, [heartPieceDone])
 
   const wikiTitles = useMemo(
     () => [...bestiaryEntries.map(entry => entry.pageTitle), ...npcEntries.map(entry => entry.pageTitle)],
@@ -206,6 +224,10 @@ function App() {
     setQuestDone((current: string[]) => (current.includes(id) ? current.filter((item: string) => item !== id) : [...current, id]))
   }
 
+  const toggleHeartPieceDone = (id: string) => {
+    setHeartPieceDone((current: string[]) => (current.includes(id) ? current.filter((item: string) => item !== id) : [...current, id]))
+  }
+
   const openQuestFromNpc = (quest: QuestEntry) => {
     setSelectedNpc(null)
     setSelectedQuest(quest)
@@ -216,12 +238,13 @@ function App() {
     setSelectedNpc(npc)
   }
 
-  const openMapLocation = (locationId: string, skulltulaId?: string) => {
+  const openMapLocation = (locationId: string, skulltulaId?: string, heartPieceId?: string) => {
     setSelectedNpc(null)
     setSelectedCreature(null)
     setSelectedQuest(null)
     setSelectedSkulltula(null)
-    focusMapLocation(locationId, skulltulaId)
+    setSelectedHeartPiece(null)
+    focusMapLocation(locationId, skulltulaId, heartPieceId)
   }
 
   return (
@@ -239,6 +262,7 @@ function App() {
           <a href="#guia">Guia</a>
           <a href="#quests">Quests</a>
           <a href="#skulltulas">Skulltulas</a>
+          <a href="#heart-pieces">Corações</a>
           <a href="#locais">Locais</a>
           <a href="#bestiario">Bestiário</a>
           <a href="#npcs">NPCs</a>
@@ -356,6 +380,14 @@ function App() {
           <GoldSkulltulasSection
             entries={goldSkulltulas}
             onOpenEntry={setSelectedSkulltula}
+            onFocusLocation={openMapLocation}
+          />
+
+          <HeartPiecesSection
+            entries={heartPieces}
+            completed={heartPieceDone}
+            onToggleComplete={toggleHeartPieceDone}
+            onOpenEntry={setSelectedHeartPiece}
             onFocusLocation={openMapLocation}
           />
 
@@ -710,6 +742,16 @@ function App() {
         <GoldSkulltulaModal
           skulltula={selectedSkulltula}
           onClose={() => setSelectedSkulltula(null)}
+          onFocusLocation={openMapLocation}
+        />
+      )}
+
+      {selectedHeartPiece && (
+        <HeartPieceModal
+          piece={selectedHeartPiece}
+          completed={heartPieceDone.includes(selectedHeartPiece.id)}
+          onToggleComplete={() => toggleHeartPieceDone(selectedHeartPiece.id)}
+          onClose={() => setSelectedHeartPiece(null)}
           onFocusLocation={openMapLocation}
         />
       )}
