@@ -12,12 +12,15 @@ import {
   Swords,
   Users,
 } from 'lucide-react'
+import GoldSkulltulaModal from './components/GoldSkulltulaModal'
+import GoldSkulltulasSection from './components/GoldSkulltulasSection'
 import InteractiveMap from './components/InteractiveMap'
 import CreatureDetailModal from './components/CreatureDetailModal'
 import NpcDetailModal from './components/NpcDetailModal'
 import QuestDetailModal from './components/QuestDetailModal'
 import QuestsSection from './components/QuestsSection'
 import { bestiaryEntries, type BestiaryCategory, type BestiaryEntry } from './data/bestiary'
+import { goldSkulltulas, type SkulltulaEntry } from './data/goldSkulltulas'
 import { guideSteps } from './data/guide'
 import { locations } from './data/locations'
 import { npcEntries, type NpcCategory, type NpcEntry } from './data/npcs'
@@ -49,6 +52,9 @@ const sources = [
   { label: 'Z64Central — capturas e análise do trailer/gameplay', url: 'https://z64central.com/switch-2/' },
   { label: 'IGN — Side Quests & Mini-Games', url: 'https://www.ign.com/wikis/the-legend-of-zelda-ocarina-of-time-3d/Side_Quests_%26_Mini-Games' },
   { label: 'Jegged — Ocarina of Time Side Quests', url: 'https://jegged.com/Games/Legend-of-Zelda-Ocarina-of-Time/Side-Quests/' },
+  { label: 'Zelda Dungeon — Ocarina of Time Gold Skulltulas', url: 'https://www.zeldadungeon.net/wiki/Ocarina_of_Time_Gold_Skulltulas' },
+  { label: 'Zelda Central — Gold Skulltula Locations', url: 'https://pt.zeldacentral.com/games/ocarina-of-time/gold-skulltula-locations/' },
+  { label: 'IGN — Gold Skulltulas', url: 'https://www.ign.com/wikis/the-legend-of-zelda-ocarina-of-time-3d/Gold_Skulltulas' },
 ]
 
 function useWikiThumbnails(titles: string[]) {
@@ -141,6 +147,7 @@ function App() {
   const [selectedNpc, setSelectedNpc] = useState<NpcEntry | null>(null)
   const [selectedCreature, setSelectedCreature] = useState<BestiaryEntry | null>(null)
   const [selectedQuest, setSelectedQuest] = useState<QuestEntry | null>(null)
+  const [selectedSkulltula, setSelectedSkulltula] = useState<SkulltulaEntry | null>(null)
   const [questDone, setQuestDone] = useState<string[]>(() => {
     try {
       return JSON.parse(localStorage.getItem('oot-optional-progress') || '[]')
@@ -209,11 +216,12 @@ function App() {
     setSelectedNpc(npc)
   }
 
-  const openMapLocation = (locationId: string) => {
+  const openMapLocation = (locationId: string, skulltulaId?: string) => {
     setSelectedNpc(null)
     setSelectedCreature(null)
     setSelectedQuest(null)
-    focusMapLocation(locationId)
+    setSelectedSkulltula(null)
+    focusMapLocation(locationId, skulltulaId)
   }
 
   return (
@@ -230,6 +238,7 @@ function App() {
           <a href="#mapa">Mapa</a>
           <a href="#guia">Guia</a>
           <a href="#quests">Quests</a>
+          <a href="#skulltulas">Skulltulas</a>
           <a href="#locais">Locais</a>
           <a href="#bestiario">Bestiário</a>
           <a href="#npcs">NPCs</a>
@@ -343,6 +352,12 @@ function App() {
           </section>
 
           <QuestsSection completed={questDone} onToggleComplete={toggleQuestDone} onOpenQuest={setSelectedQuest} />
+
+          <GoldSkulltulasSection
+            entries={goldSkulltulas}
+            onOpenEntry={setSelectedSkulltula}
+            onFocusLocation={openMapLocation}
+          />
 
           <section id="locais" className="locations-section">
             <div className="section-heading">
@@ -687,6 +702,14 @@ function App() {
           creature={selectedCreature}
           fallbackImage={thumbnails[selectedCreature.pageTitle]}
           onClose={() => setSelectedCreature(null)}
+          onFocusLocation={openMapLocation}
+        />
+      )}
+
+      {selectedSkulltula && (
+        <GoldSkulltulaModal
+          skulltula={selectedSkulltula}
+          onClose={() => setSelectedSkulltula(null)}
           onFocusLocation={openMapLocation}
         />
       )}

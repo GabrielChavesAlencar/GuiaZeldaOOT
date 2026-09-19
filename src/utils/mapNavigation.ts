@@ -53,13 +53,13 @@ export function findMapLocationsByText(text: string): MapLocation[] {
   return matches
 }
 
-export function focusMapLocation(locationId: string) {
+export function focusMapLocation(locationId: string, skulltulaId?: string) {
   document.getElementById('mapa')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   window.setTimeout(() => {
     window.dispatchEvent(
-      new CustomEvent<{ locationId: string }>(MAP_FOCUS_EVENT, {
-        detail: { locationId },
+      new CustomEvent<{ locationId: string; skulltulaId?: string }>(MAP_FOCUS_EVENT, {
+        detail: { locationId, skulltulaId },
       }),
     )
   }, 220)
