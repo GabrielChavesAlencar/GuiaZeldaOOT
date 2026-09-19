@@ -16,6 +16,8 @@ import GoldSkulltulaModal from './components/GoldSkulltulaModal'
 import GoldSkulltulasSection from './components/GoldSkulltulasSection'
 import HeartPieceModal from './components/HeartPieceModal'
 import HeartPiecesSection from './components/HeartPiecesSection'
+import ItemDetailModal from './components/ItemDetailModal'
+import ItemsSection from './components/ItemsSection'
 import InteractiveMap from './components/InteractiveMap'
 import CreatureDetailModal from './components/CreatureDetailModal'
 import NpcDetailModal from './components/NpcDetailModal'
@@ -24,6 +26,7 @@ import QuestsSection from './components/QuestsSection'
 import { bestiaryEntries, type BestiaryCategory, type BestiaryEntry } from './data/bestiary'
 import { goldSkulltulas, type SkulltulaEntry } from './data/goldSkulltulas'
 import { heartPieces, type HeartPieceEntry } from './data/heartPieces'
+import { itemEntries, type ItemEntry } from './data/items'
 import { guideSteps } from './data/guide'
 import { locations } from './data/locations'
 import { npcEntries, type NpcCategory, type NpcEntry } from './data/npcs'
@@ -61,6 +64,9 @@ const sources = [
   { label: 'Zelda Dungeon — Ocarina of Time Heart Pieces', url: 'https://www.zeldadungeon.net/wiki/Ocarina_of_Time_Heart_Pieces' },
   { label: 'Zelda Central — Heart Piece Locations', url: 'https://pt.zeldacentral.com/games/ocarina-of-time/heart-pieces/' },
   { label: 'IGN — Heart Pieces', url: 'https://www.ign.com/wikis/the-legend-of-zelda-ocarina-of-time-3d/Heart_Pieces' },
+  { label: 'Zelda Dungeon — Ocarina of Time Items', url: 'https://www.zeldadungeon.net/wiki/Ocarina_of_Time_Items' },
+  { label: 'Zelda Wiki — Items in Ocarina of Time', url: 'https://zelda.fandom.com/wiki/Items_in_Ocarina_of_Time' },
+  { label: 'Eternal Players — Database de Itens', url: 'https://eternalplayers.wordpress.com/2012/12/11/n64-the-legend-of-zelda-ocarina-of-time-itens/' },
 ]
 
 function useWikiThumbnails(titles: string[]) {
@@ -155,6 +161,7 @@ function App() {
   const [selectedQuest, setSelectedQuest] = useState<QuestEntry | null>(null)
   const [selectedSkulltula, setSelectedSkulltula] = useState<SkulltulaEntry | null>(null)
   const [selectedHeartPiece, setSelectedHeartPiece] = useState<HeartPieceEntry | null>(null)
+  const [selectedItem, setSelectedItem] = useState<ItemEntry | null>(null)
   const [heartPieceDone, setHeartPieceDone] = useState<string[]>(() => {
     try {
       return JSON.parse(localStorage.getItem('oot-heart-piece-progress') || '[]')
@@ -183,7 +190,7 @@ function App() {
   }, [heartPieceDone])
 
   const wikiTitles = useMemo(
-    () => [...bestiaryEntries.map(entry => entry.pageTitle), ...npcEntries.map(entry => entry.pageTitle)],
+    () => [...bestiaryEntries.map(entry => entry.pageTitle), ...npcEntries.map(entry => entry.pageTitle), ...itemEntries.map(entry => entry.pageTitle)],
     [],
   )
   const thumbnails = useWikiThumbnails(wikiTitles)
@@ -238,12 +245,18 @@ function App() {
     setSelectedNpc(npc)
   }
 
+  const openQuestFromItem = (quest: QuestEntry) => {
+    setSelectedItem(null)
+    setSelectedQuest(quest)
+  }
+
   const openMapLocation = (locationId: string, skulltulaId?: string, heartPieceId?: string) => {
     setSelectedNpc(null)
     setSelectedCreature(null)
     setSelectedQuest(null)
     setSelectedSkulltula(null)
     setSelectedHeartPiece(null)
+    setSelectedItem(null)
     focusMapLocation(locationId, skulltulaId, heartPieceId)
   }
 
@@ -263,6 +276,7 @@ function App() {
           <a href="#quests">Quests</a>
           <a href="#skulltulas">Skulltulas</a>
           <a href="#heart-pieces">Corações</a>
+          <a href="#itens">Itens</a>
           <a href="#locais">Locais</a>
           <a href="#bestiario">Bestiário</a>
           <a href="#npcs">NPCs</a>
@@ -389,6 +403,12 @@ function App() {
             onToggleComplete={toggleHeartPieceDone}
             onOpenEntry={setSelectedHeartPiece}
             onFocusLocation={openMapLocation}
+          />
+
+          <ItemsSection
+            entries={itemEntries}
+            thumbnails={thumbnails}
+            onOpenItem={setSelectedItem}
           />
 
           <section id="locais" className="locations-section">
@@ -702,7 +722,7 @@ function App() {
                 </a>
               ))}
               <a href="https://zelda.fandom.com" target="_blank" rel="noreferrer">
-                <span>Zelda Wiki / Fandom — thumbnails de bestiário e NPCs</span>
+                <span>Zelda Wiki / Fandom — thumbnails de bestiário, NPCs e itens sem visual novo confirmado</span>
                 <ExternalLink size={17} />
               </a>
             </div>
@@ -753,6 +773,17 @@ function App() {
           onToggleComplete={() => toggleHeartPieceDone(selectedHeartPiece.id)}
           onClose={() => setSelectedHeartPiece(null)}
           onFocusLocation={openMapLocation}
+        />
+      )}
+
+      {selectedItem && (
+        <ItemDetailModal
+          item={selectedItem}
+          fallbackImage={thumbnails[selectedItem.pageTitle]}
+          relatedQuests={questEntries.filter(quest => selectedItem.questIds.includes(quest.id))}
+          onClose={() => setSelectedItem(null)}
+          onOpenQuest={openQuestFromItem}
+          onFocusLocation={locationId => openMapLocation(locationId)}
         />
       )}
 
