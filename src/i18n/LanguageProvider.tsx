@@ -1,5 +1,16 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react'
+import {
+  applyImmediateLanguage,
   checkTranslationAvailability,
   prepareTranslator,
   startDomTranslationObserver,
@@ -17,7 +28,8 @@ type LanguageContextValue = {
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null)
-const STORAGE_KEY = 'oot-site-language'
+const STORAGE_KEY = 'oot-site-language-v3'
+const LEGACY_STORAGE_KEYS = ['oot-site-language', 'oot-site-language-v2']
 
 const PAGE_META: Record<SiteLanguage, { title: string; description: string }> = {
   en: {
@@ -54,16 +66,40 @@ function readInitialLanguage(): SiteLanguage {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (isSiteLanguage(saved)) return saved
+
+    // Older builds stored Portuguese as the active/default language. Do not
+    // inherit that stale preference after switching the site default to English.
+    for (const key of LEGACY_STORAGE_KEYS) {
+      const legacy = localStorage.getItem(key)
+      if (isSiteLanguage(legacy) && legacy !== 'pt-BR') return legacy
+    }
   } catch {
-    // Ignore unavailable localStorage and use English by default.
+    // Ignore unavailable localStorage.
   }
   return DEFAULT_LANGUAGE
+}
+
+function updatePageMeta(language: SiteLanguage) {
+  document.documentElement.lang = language
+  document.documentElement.dir = 'ltr'
+  document.title = PAGE_META[language].title
+  const descriptionMeta = document.querySelector<HTMLMetaElement>('meta[name="description"]')
+  if (descriptionMeta) descriptionMeta.content = PAGE_META[language].description
+}
+
+function classifyError(error: unknown): TranslationStatus {
+  const message = error instanceof Error ? `${error.name} ${error.message}` : String(error)
+  if (message.includes('needs-action') || message.includes('NotAllowedError')) return 'needs-action'
+  if (message.includes('unsupported') || message.includes('unavailable')) return 'unsupported'
+  return 'error'
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<SiteLanguage>(readInitialLanguage)
   const [status, setStatus] = useState<TranslationStatus>('idle')
   const [downloadProgress, setDownloadProgress] = useState(0)
+  const gesturePreparation = useRef<Partial<Record<SiteLanguage, Promise<any>>>>({})
+  const runId = useRef(0)
 
   const persist = useCallback((nextLanguage: SiteLanguage) => {
     try {
@@ -73,90 +109,131 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const runTranslation = useCallback(async (targetLanguage = language) => {
-    document.documentElement.lang = targetLanguage
-    document.documentElement.dir = 'ltr'
-    document.title = PAGE_META[targetLanguage].title
-    const descriptionMeta = document.querySelector<HTMLMetaElement>('meta[name="description"]')
-    if (descriptionMeta) descriptionMeta.content = PAGE_META[targetLanguage].description
-
+  const finishTranslation = useCallback(async (targetLanguage: SiteLanguage) => {
+    const id = ++runId.current
     setStatus('translating')
+
     try {
       await translateDom(targetLanguage)
+      if (id !== runId.current) return
       setStatus('ready')
       setDownloadProgress(1)
+      document.documentElement.dataset.i18nReady = 'true'
     } catch (error) {
-      const message = error instanceof Error ? error.message : String(error)
-      if (message.includes('needs-action')) setStatus('needs-action')
-      else if (message.includes('unsupported') || message.includes('unavailable')) setStatus('unsupported')
-      else if (message.includes('NotAllowedError')) setStatus('needs-action')
-      else setStatus('error')
+      if (id !== runId.current) return
+      setStatus(classifyError(error))
+      document.documentElement.dataset.i18nReady = 'fallback'
     }
+  }, [])
+
+  // The bundled core dictionary is synchronous and runs before paint. This
+  // removes the Portuguese flash from the header/hero while the full page is
+  // translated in the background.
+  useLayoutEffect(() => {
+    updatePageMeta(language)
+    applyImmediateLanguage(language)
   }, [language])
 
   const changeLanguage = useCallback((nextLanguage: SiteLanguage) => {
-    persist(nextLanguage)
-    setLanguage(nextLanguage)
-    setDownloadProgress(0)
+    if (nextLanguage === language) return
 
-    if (nextLanguage === 'pt-BR') {
-      setStatus('translating')
-      return
+    persist(nextLanguage)
+    setDownloadProgress(0)
+    document.documentElement.dataset.i18nReady = 'switching'
+
+    if (nextLanguage !== 'pt-BR') {
+      // Called directly from the select change event so a missing Chrome
+      // language pack can start downloading while user activation is present.
+      setStatus('downloading')
+      gesturePreparation.current[nextLanguage] = prepareTranslator(nextLanguage, setDownloadProgress)
     }
 
-    // This call happens directly inside the <select> change event. Chrome
-    // therefore allows downloading a missing language pack as a user gesture.
-    setStatus('downloading')
-    void prepareTranslator(nextLanguage, setDownloadProgress)
-      .then(() => runTranslation(nextLanguage))
-      .catch(error => {
-        const message = error instanceof Error ? error.message : String(error)
-        if (message.includes('unsupported') || message.includes('unavailable')) setStatus('unsupported')
-        else if (message.includes('NotAllowedError')) setStatus('needs-action')
-        else setStatus('error')
-      })
-  }, [persist, runTranslation])
+    setLanguage(nextLanguage)
+  }, [language, persist])
 
   const activateCurrentLanguage = useCallback(() => {
     if (language === 'pt-BR') {
-      void runTranslation(language)
+      void finishTranslation(language)
       return
     }
 
     setStatus('downloading')
     setDownloadProgress(0)
-    // Called directly by the Enable button click, preserving user activation.
-    void prepareTranslator(language, setDownloadProgress)
-      .then(() => runTranslation(language))
-      .catch(error => {
-        const message = error instanceof Error ? error.message : String(error)
-        if (message.includes('unsupported') || message.includes('unavailable')) setStatus('unsupported')
-        else setStatus('error')
-      })
-  }, [language, runTranslation])
+    const promise = prepareTranslator(language, setDownloadProgress)
+    gesturePreparation.current[language] = promise
+    void promise
+      .then(() => finishTranslation(language))
+      .catch(error => setStatus(classifyError(error)))
+  }, [finishTranslation, language])
 
   useEffect(() => {
-    document.documentElement.lang = language
     let cancelled = false
 
-    void checkTranslationAvailability(language).then(availability => {
-      if (cancelled) return
-      if (language === 'pt-BR' || availability === 'available') void runTranslation(language)
-      else if (availability === 'downloadable') setStatus('needs-action')
-      else if (availability === 'unsupported' || availability === 'unavailable') setStatus('unsupported')
-      else setStatus('needs-action')
-    })
-
-    return () => {
-      cancelled = true
+    if (language === 'pt-BR') {
+      void finishTranslation(language)
+      return () => { cancelled = true }
     }
-  }, [language, runTranslation])
 
+    const preparedByGesture = gesturePreparation.current[language]
+    if (preparedByGesture) {
+      delete gesturePreparation.current[language]
+      void preparedByGesture
+        .then(() => {
+          if (!cancelled) return finishTranslation(language)
+        })
+        .catch(error => {
+          if (!cancelled) setStatus(classifyError(error))
+        })
+      return () => { cancelled = true }
+    }
+
+    // Initial page load: try an already available pack immediately. If the
+    // browser allows background creation we use it; otherwise the core English
+    // dictionary is already visible and the selector can enable the full pack.
+    void checkTranslationAvailability(language)
+      .then(async availability => {
+        if (cancelled) return
+
+        if (availability === 'available') {
+          await finishTranslation(language)
+          return
+        }
+
+        if (availability === 'downloadable') {
+          setStatus('downloading')
+          try {
+            await prepareTranslator(language, setDownloadProgress)
+            if (!cancelled) await finishTranslation(language)
+          } catch (error) {
+            if (!cancelled) setStatus(classifyError(error))
+          }
+          return
+        }
+
+        if (availability === 'unsupported' || availability === 'unavailable') {
+          setStatus('unsupported')
+          document.documentElement.dataset.i18nReady = 'fallback'
+          return
+        }
+
+        setStatus('needs-action')
+      })
+      .catch(error => {
+        if (!cancelled) setStatus(classifyError(error))
+      })
+
+    return () => { cancelled = true }
+  }, [finishTranslation, language])
+
+  // Only translate nodes that React has just added/changed instead of rescanning
+  // the entire site after every modal, filter or progress update.
   useEffect(() => {
-    return startDomTranslationObserver(() => {
-      if (status === 'ready' || language === 'pt-BR') void runTranslation(language)
+    return startDomTranslationObserver(roots => {
+      roots.forEach(root => applyImmediateLanguage(language, root))
+      if (status !== 'ready') return
+      roots.forEach(root => void translateDom(language, root, false))
     })
-  }, [language, runTranslation, status])
+  }, [language, status])
 
   const value = useMemo(
     () => ({ language, changeLanguage, activateCurrentLanguage, status, downloadProgress }),
