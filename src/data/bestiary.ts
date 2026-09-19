@@ -78,11 +78,11 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/Dodongo_Artwork_Ocarina_of_Time_and_Majoras_Mask-600x444.webp',
   },
   {
-    id: 'leever', name: 'Leever', pageTitle: 'Leever', category: 'Inimigo comum', visual: 'Clássico',
+    id: 'leever', name: 'Leever', pageTitle: 'Leever', category: 'Inimigo comum', visual: 'Remake 2026',
     location: 'Deserto Assombrado e Colosso do Deserto',
     description: 'Criatura subterrânea que emerge da areia girando em direção a Link.',
     weakness: 'Defenda o avanço e ataque logo depois de ela emergir.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/OoT_Leever_Artwork.webp',
+    imageUrl: '/leever-remake.png',
   },
   {
     id: 'poe', name: 'Poe', pageTitle: 'Poe', category: 'Inimigo comum', visual: 'Clássico',
