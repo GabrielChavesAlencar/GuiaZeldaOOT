@@ -19,6 +19,7 @@ import HeartPiecesSection from './components/HeartPiecesSection'
 import ItemDetailModal from './components/ItemDetailModal'
 import ItemsSection from './components/ItemsSection'
 import InteractiveMap from './components/InteractiveMap'
+import LanguageSelector from './components/LanguageSelector'
 import CreatureDetailModal from './components/CreatureDetailModal'
 import NpcDetailModal from './components/NpcDetailModal'
 import QuestDetailModal from './components/QuestDetailModal'
@@ -289,9 +290,12 @@ function App() {
           <a href="#remake">Remake</a>
           <a href="#fontes">Fontes</a>
         </nav>
-        <a className="progress-pill" href="#guia">
-          <span>{completion}%</span> progresso
-        </a>
+        <div className="topbar-actions">
+          <LanguageSelector />
+          <a className="progress-pill" href="#guia">
+            <span>{completion}%</span> progresso
+          </a>
+        </div>
       </header>
 
       <main>
