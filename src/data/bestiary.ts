@@ -26,11 +26,13 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://z64central.com/switch-2/great-deku-tree-switch-2-remake-baba_hu_80705289f805be27.webp',
   },
   {
-    id: 'deku-scrub', name: 'Deku Scrub', pageTitle: 'Deku Scrub', category: 'Inimigo comum', visual: 'Clássico',
+    id: 'deku-scrub', name: 'Deku Scrub', pageTitle: 'Deku Scrub', category: 'Inimigo comum', visual: 'Remake 2026',
     location: 'Florestas, grutas e diversas masmorras',
     description: 'Criatura vegetal que se esconde no chão e dispara nozes à distância.',
     weakness: 'Rebata a noz com o escudo e aproxime-se enquanto estiver atordoado.',
-    imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/OoT_Deku_Scrub_Artwork.webp',
+    visualDescription: 'O novo Deku Scrub do remake tem corpo em forma de noz escura com textura de casca, olhos alaranjados brilhantes, focinho tubular de madeira e um colar de folhas verdes na base. O topo recebe um pequeno broto com folhas largas, reforçando o visual vegetal. A cena também mostra um ambiente úmido e enevoado, combinando com a vegetação densa ao redor.',
+    visualSourceUrl: 'https://www.nintendo.com/jp/games/switch2/aa9ja/hyrule/index.html',
+    imageUrl: '/deku-scrub-remake.png',
   },
   {
     id: 'keese', name: 'Keese', pageTitle: 'Keese', category: 'Inimigo comum', visual: 'OOT 3D',
