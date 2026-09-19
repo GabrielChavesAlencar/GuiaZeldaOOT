@@ -1,4 +1,4 @@
-import { Compass, ExternalLink, MapPin, ShieldCheck, Swords, X } from 'lucide-react'
+import { Compass, ExternalLink, MapPin, ShieldCheck, Sparkles, Swords, X } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import type { BestiaryEntry } from '../data/bestiary'
 import { findMapLocationsByText } from '../utils/mapNavigation'
@@ -69,6 +69,14 @@ export default function CreatureDetailModal({ creature, fallbackImage, onClose, 
             <h3><Swords size={18} /> Descrição</h3>
             <p>{creature.description}</p>
           </section>
+
+          {creature.visualDescription && (
+            <section className="detail-block visual-analysis-block">
+              <h3><Sparkles size={18} /> Visual no remake</h3>
+              <p>{creature.visualDescription}</p>
+              {creature.visualSourceUrl && <a href={creature.visualSourceUrl} target="_blank" rel="noreferrer">Ver referência visual <ExternalLink size={14} /></a>}
+            </section>
+          )}
 
           <section className="detail-facts creature-facts">
             <div><Compass size={17} /><span><b>Onde encontrar</b>{creature.location}</span></div>

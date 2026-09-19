@@ -1,4 +1,4 @@
-import { Compass, ExternalLink, MapPin, ScrollText, ShieldCheck, UserRound, X } from 'lucide-react'
+import { Compass, ExternalLink, MapPin, ScrollText, ShieldCheck, Sparkles, UserRound, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { NpcEntry } from '../data/npcs'
 import { getSpoilerFreeNpcBio } from '../data/npcProfiles'
@@ -71,6 +71,14 @@ export default function NpcDetailModal({ npc, fallbackImage, relatedQuests, onCl
             <p>{getSpoilerFreeNpcBio(npc)}</p>
             <div className="spoiler-safe-note">Este texto evita identidades secretas, mudanças de destino, mortes, revelações, chefes e acontecimentos posteriores da campanha.</div>
           </section>
+
+          {npc.visualDescription && (
+            <section className="detail-block visual-analysis-block">
+              <h3><Sparkles size={18} /> Visual no remake</h3>
+              <p>{npc.visualDescription}</p>
+              {npc.visualSourceUrl && <a href={npc.visualSourceUrl} target="_blank" rel="noreferrer">Ver referência visual <ExternalLink size={14} /></a>}
+            </section>
+          )}
 
           <section className="detail-facts">
             <div><Compass size={17} /><span><b>Onde encontrar</b>{npc.location}</span></div>

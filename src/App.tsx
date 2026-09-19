@@ -61,6 +61,7 @@ const sources = [
   { label: 'Nintendo Japão — Action', url: 'https://www.nintendo.com/jp/games/switch2/aa9ja/action/index.html' },
   { label: 'Trailer do remake — YouTube', url: 'https://www.youtube.com/watch?v=Cm8DKgjHMV4' },
   { label: 'Gameplay com Eiji Aonuma — YouTube', url: 'https://www.youtube.com/watch?v=PQvD3p2yGwc' },
+  { label: 'Análise detalhada do trailer — YouTube', url: 'https://www.youtube.com/watch?v=5dM5CyPjN7g' },
   { label: 'Z64Central — capturas e análise do trailer/gameplay', url: 'https://z64central.com/switch-2/' },
   { label: 'IGN — Side Quests & Mini-Games', url: 'https://www.ign.com/wikis/the-legend-of-zelda-ocarina-of-time-3d/Side_Quests_%26_Mini-Games' },
   { label: 'Jegged — Ocarina of Time Side Quests', url: 'https://jegged.com/Games/Legend-of-Zelda-Ocarina-of-Time/Side-Quests/' },

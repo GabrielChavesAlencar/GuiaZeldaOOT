@@ -11,6 +11,8 @@ export type BestiaryEntry = {
   description: string
   weakness: string
   imageUrl: string
+  visualDescription?: string
+  visualSourceUrl?: string
 }
 
 export const bestiaryEntries: BestiaryEntry[] = [
@@ -19,6 +21,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Floresta Kokiri, Bosques Perdidos e primeiras masmorras',
     description: 'Planta agressiva que avança com mordidas quando Link se aproxima.',
     weakness: 'Espada e Deku Nuts; corte o caule quando houver abertura.',
+    visualDescription: 'No remake, a Deku Baba tem uma cabeça azul-esverdeada manchada, caule vermelho e tentáculos semelhantes a cipós. A cena mostra Link usando o lock-on dentro da Grande Árvore Deku, com Navi destacando o inimigo e iluminação úmida da masmorra.',
+    visualSourceUrl: 'https://z64central.com/walkthrough/deku-tree/',
     imageUrl: 'https://z64central.com/switch-2/great-deku-tree-switch-2-remake-baba_hu_80705289f805be27.webp',
   },
   {
@@ -47,6 +51,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Montanha da Morte, Lago Hylia e áreas abertas',
     description: 'Artrópode de um olho que salta de forma irregular; há versões vermelhas e azuis.',
     weakness: 'Ataques à distância ajudam a lidar com os saltos imprevisíveis.',
+    visualDescription: 'A versão azul aparece muito maior e mais detalhada, com um único olho luminoso e patas articuladas. O trailer coloca duas Tektites em uma área alagada de Hyrule Field ao pôr do sol, enfatizando reflexos na água e a escala do novo modelo.',
+    visualSourceUrl: 'https://z64central.com/switch-2/',
     imageUrl: 'https://z64central.com/switch-2/hyrule-field-switch-2-remake-6_hu_fa5cd80513559edb.webp',
   },
   {
@@ -61,6 +67,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Templo da Floresta, Templo das Sombras, Templo do Espírito e Castelo de Ganon',
     description: 'Cavaleiro esqueleto com espada e escudo, capaz de defender e contra-atacar.',
     weakness: 'Espere a guarda baixar, ataque pelas costas ou use Deku Nuts e bombas para criar abertura.',
+    visualDescription: 'Dois Stalfos aparecem no Forest Temple com armadura segmentada, escudos redondos e espadas. Os ossos e placas metálicas respondem à iluminação das lanternas, e o inimigo pisca em vermelho ao receber dano.',
+    visualSourceUrl: 'https://z64central.com/walkthrough/forest-temple/',
     imageUrl: 'https://z64central.com/switch-2/forest-temple-switch-2-remake-stalfos-1_hu_df256134ca7b3f98.webp',
   },
   {
@@ -82,6 +90,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Deserto Assombrado e Colosso do Deserto',
     description: 'Criatura subterrânea que emerge da areia girando em direção a Link.',
     weakness: 'Defenda o avanço e ataque logo depois de ela emergir.',
+    visualDescription: 'O novo Leever mantém a ideia de uma criatura que irrompe da areia, mas ganhou um corpo verde volumoso, placas naturais e estruturas douradas semelhantes a chifres ao redor do topo, com detalhes vermelhos. A cena mostra vários deles cercando Link no deserto enquanto areia e partículas são levantadas pelo combate.',
+    visualSourceUrl: 'https://www.nintendo.com/jp/games/switch2/aa9ja/action/index.html',
     imageUrl: '/leever-remake.png',
   },
   {
@@ -120,6 +130,15 @@ export const bestiaryEntries: BestiaryEntry[] = [
     imageUrl: 'https://zeldacentral.com/wp-content/uploads/2025/04/OoT_Shabom_Model.webp',
   },
   {
+    id: 'parasitic-tentacle', name: 'Parasitic Tentacle', pageTitle: 'Parasitic Tentacle', category: 'Inimigo comum', visual: 'Remake 2026',
+    location: 'Interior de Jabu-Jabu',
+    description: 'Tentáculo parasita gigantesco que bloqueia passagens no interior de Jabu-Jabu e reage aos ataques de Link.',
+    weakness: 'Use o Boomerang para acertar a extremidade vulnerável e abrir caminho.',
+    visualDescription: 'No remake, o tentáculo é uma massa verde enorme e cheia de veias, pendurada no teto orgânico de Jabu-Jabu. A ponta bulbosa possui espinhos e eletricidade roxa, enquanto o Boomerang de Link aparece em pleno voo contra ele.',
+    visualSourceUrl: 'https://z64central.com/walkthrough/jabu-jabus-belly/',
+    imageUrl: 'https://z64central.com/switch-2/jabu-jabus-belly-switch-2-remake-1_hu_401b01e7ec008275.webp',
+  },
+  {
     id: 'biri-bari', name: 'Biri / Bari', pageTitle: 'Biri', category: 'Inimigo comum', visual: 'Clássico',
     location: 'Dentro da barriga de Lord Jabu-Jabu',
     description: 'Águas-vivas elétricas; Bari pode se dividir em vários Biri.',
@@ -152,6 +171,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Bosques Perdidos, grutas e áreas geladas',
     description: 'Predador veloz que circula Link e tenta encontrar espaço para atacar.',
     weakness: 'Defenda o bote e contra-ataque imediatamente depois.',
+    visualDescription: 'O Wolfos foi redesenhado para parecer muito mais animal: pelagem cinza desgrenhada, olhos amarelos intensos, língua exposta e garras com pontas avermelhadas. Ele aparece diante da entrada do Sacred Forest Meadow, com uma barreira de espinhos roxos brilhantes ao fundo.',
+    visualSourceUrl: 'https://z64central.com/walkthrough/lost-woods/',
     imageUrl: 'https://z64central.com/switch-2/sacred-forest-meadow-switch-2-remake-1_hu_212ff56914419426.webp',
   },
   {
@@ -166,6 +187,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Diversas masmorras',
     description: 'Torre fixa com um olho que acompanha Link e dispara um raio laser.',
     weakness: 'Bombas na base ou ataques precisos no olho quando possível.',
+    visualDescription: 'O Beamos do remake é uma estátua mecânica de pedra com olho central luminoso. No Spirit Temple, ele dispara um feixe roxo que risca o chão de arenito enquanto Link se abaixa; o cenário traz ornamentos geométricos vermelhos e luz entrando pelo teto.',
+    visualSourceUrl: 'https://z64central.com/switch-2/',
     imageUrl: 'https://z64central.com/switch-2/spirit-temple-switch-2-remake-1_hu_22938c59c6f3fb54.webp',
   },
   {
@@ -223,6 +246,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Templo do Espírito, Gerudo Training Ground e Castelo de Ganon',
     description: 'Cavaleiro extremamente resistente com um machado de enorme alcance.',
     weakness: 'Esquive do golpe pesado e ataque durante a recuperação.',
+    visualDescription: 'O Iron Knuckle aparece coberto por uma armadura negra pesada, saia vermelha e um enorme machado de duas mãos. O golpe deixa um rastro vermelho de movimento, reforçando o peso do ataque e a diferença de escala entre o minichefe e Link.',
+    visualSourceUrl: 'https://z64central.com/switch-2/',
     imageUrl: 'https://z64central.com/switch-2/spirit-temple-switch-2-remake-iron-knuckle_hu_f779e3cb4472e797.webp',
   },
   {
@@ -252,6 +277,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Dentro da Grande Árvore Deku',
     description: 'Aracnídeo colossal de um olho e primeiro chefe principal da aventura.',
     weakness: 'Atordoe o olho quando ficar vulnerável e ataque com a espada.',
+    visualDescription: 'Queen Gohma ganhou um visual de aracnídeo blindado muito mais orgânico. O trailer primeiro mostra um close extremo do enorme olho amarelo-avermelhado, cercado por placas vermelhas, e depois a criatura erguida sobre quatro membros espinhosos na névoa azul-esverdeada da arena.',
+    visualSourceUrl: 'https://z64central.com/walkthrough/deku-tree/',
     imageUrl: 'https://z64central.com/switch-2/great-deku-tree-switch-2-remake-gohma-2_hu_3d094d55f9962fd2.webp',
   },
   {
@@ -259,6 +286,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Caverna dos Dodongos',
     description: 'Dinossauro gigantesco que cospe fogo e percorre a arena rolando.',
     weakness: 'Jogue uma bomba na boca durante a inspiração e ataque enquanto estiver caído.',
+    visualDescription: 'King Dodongo é mostrado como um réptil gigantesco coberto por placas de rocha, com mandíbula extremamente larga, fileiras de dentes, língua espessa e um olho azul-ciano luminoso. Link aparece pequeno no quadro para reforçar a escala do chefe.',
+    visualSourceUrl: 'https://z64central.com/switch-2/',
     imageUrl: 'https://z64central.com/switch-2/dodongos-cavern-switch-2-remake-king-dodongo_hu_11ed2cf7efbf4f2c.webp',
   },
   {
@@ -273,6 +302,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Templo da Floresta',
     description: 'Projeção fantasmagórica de Ganondorf que usa pinturas e magia.',
     weakness: 'Arco na fase das pinturas e rebatidas de energia na fase final.',
+    visualDescription: 'Phantom Ganon surge como uma figura espectral e blindada, com silhueta cornuda e brilho verde intenso. Ele flutua diante das pinturas do Forest Temple e lança uma esfera de energia enorme enquanto Link avança para rebater o projétil com a Master Sword.',
+    visualSourceUrl: 'https://z64central.com/walkthrough/forest-temple/',
     imageUrl: 'https://z64central.com/switch-2/forest-temple-switch-2-remake-phantom-ganon_hu_79977e4bd9f85461.webp',
   },
   {
@@ -280,6 +311,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Templo do Fogo',
     description: 'Dragão de lava que alterna entre os poços e ataques aéreos.',
     weakness: 'Megaton Hammer quando a cabeça sair da lava, seguido de golpes rápidos.',
+    visualDescription: 'Volvagia aparece como um dragão serpentino de fogo, com juba em chamas e corpo comprido emergindo violentamente de um poço de lava. A cena combina fogo azul e roxo na erupção com a iluminação vermelho-alaranjada do Fire Temple.',
+    visualSourceUrl: 'https://z64central.com/walkthrough/fire-temple/',
     imageUrl: 'https://z64central.com/switch-2/fire-temple-switch-2-remake-volvagia_hu_ebc2b2966bec5ee6.webp',
   },
   {
@@ -301,6 +334,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Templo do Espírito',
     description: 'Forma combinada de Kotake e Koume, dominando fogo e gelo.',
     weakness: 'Mirror Shield para absorver e refletir os elementos corretos.',
+    visualDescription: 'A batalha mantém o contraste entre gelo e fogo. Kotake é vista voando em sua vassoura e disparando um feixe azul contra o escudo de Link; o raio ricocheteia em forma de V dentro de uma arena coberta por glifos, confirmando o retorno da mecânica de reflexão.',
+    visualSourceUrl: 'https://z64central.com/switch-2/',
     imageUrl: 'https://z64central.com/switch-2/spirit-temple-switch-2-remake-twinrova-1_hu_1ebd2cf387886d3a.webp',
   },
   {
@@ -308,6 +343,8 @@ export const bestiaryEntries: BestiaryEntry[] = [
     location: 'Castelo de Ganon',
     description: 'Confronto final em duas formas: o rei Gerudo e a transformação monstruosa Ganon.',
     weakness: 'Rebata a magia, use Light Arrows e finalize a batalha com a Master Sword.',
+    visualDescription: 'Ganondorf aparece com pele verde, cabelos vermelhos, olhos âmbar, joia verde e dourada na testa e armadura escura com padrões Gerudo vermelhos. Outras cenas do trailer o mostram erguendo a Triforce of Power e lançando magia roxa no confronto final.',
+    visualSourceUrl: 'https://www.nintendo.com/jp/games/switch2/aa9ja/triforce/index.html',
     imageUrl: 'https://z64central.com/switch-2/ganons-castle-switch-2-remake-ganondorf-closeup-1_hu_cbf99b05d7b275ba.webp',
   },
 ]
