@@ -13,11 +13,12 @@ import {
   applyImmediateLanguage,
   checkTranslationAvailability,
   prepareTranslator,
+  preloadLanguage,
   startDomTranslationObserver,
   translateDom,
   type TranslationStatus,
 } from './domTranslator'
-import { DEFAULT_LANGUAGE, isSiteLanguage, type SiteLanguage } from './languages'
+import { DEFAULT_LANGUAGE, isSiteLanguage, PRELOADED_LANGUAGE, type SiteLanguage } from './languages'
 
 type LanguageContextValue = {
   language: SiteLanguage
@@ -96,8 +97,8 @@ function classifyError(error: unknown): TranslationStatus {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<SiteLanguage>(readInitialLanguage)
-  const [status, setStatus] = useState<TranslationStatus>('idle')
-  const [downloadProgress, setDownloadProgress] = useState(0)
+  const [status, setStatus] = useState<TranslationStatus>(() => readInitialLanguage() === PRELOADED_LANGUAGE ? 'ready' : 'idle')
+  const [downloadProgress, setDownloadProgress] = useState(() => readInitialLanguage() === PRELOADED_LANGUAGE ? 1 : 0)
   const gesturePreparation = useRef<Partial<Record<SiteLanguage, Promise<any>>>>({})
   const runId = useRef(0)
 
@@ -132,12 +133,27 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useLayoutEffect(() => {
     updatePageMeta(language)
     applyImmediateLanguage(language)
+    if (language === PRELOADED_LANGUAGE) {
+      document.documentElement.dataset.i18nReady = 'true'
+    }
   }, [language])
 
   const changeLanguage = useCallback((nextLanguage: SiteLanguage) => {
     if (nextLanguage === language) return
 
     persist(nextLanguage)
+
+    if (nextLanguage === PRELOADED_LANGUAGE) {
+      // English is bundled with the app. Show it immediately, then warm the
+      // browser translator in the background only for long-tail descriptions.
+      setDownloadProgress(1)
+      setStatus('ready')
+      document.documentElement.dataset.i18nReady = 'true'
+      void preloadLanguage(nextLanguage)
+      setLanguage(nextLanguage)
+      return
+    }
+
     setDownloadProgress(0)
     document.documentElement.dataset.i18nReady = 'switching'
 
@@ -152,6 +168,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [language, persist])
 
   const activateCurrentLanguage = useCallback(() => {
+    if (language === PRELOADED_LANGUAGE) {
+      setStatus('ready')
+      setDownloadProgress(1)
+      void preloadLanguage(language)
+      return
+    }
+
     if (language === 'pt-BR') {
       void finishTranslation(language)
       return
@@ -168,6 +191,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let cancelled = false
+
+    if (language === PRELOADED_LANGUAGE) {
+      // The visible English UI is already local and synchronous. We still try
+      // to complete any long descriptions in the background, but never show a
+      // loading state for the default language.
+      setStatus('ready')
+      setDownloadProgress(1)
+      document.documentElement.dataset.i18nReady = 'true'
+      void preloadLanguage(language).then(() => {
+        if (!cancelled) void translateDom(language).catch(() => {})
+      })
+      return () => { cancelled = true }
+    }
 
     if (language === 'pt-BR') {
       void finishTranslation(language)

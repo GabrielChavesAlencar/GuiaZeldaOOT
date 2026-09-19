@@ -1,9 +1,9 @@
 import { CORE_TRANSLATIONS } from './coreTranslations'
-import { getLanguageOption, SOURCE_LANGUAGE, type SiteLanguage } from './languages'
+import { getLanguageOption, PRELOADED_LANGUAGE, SOURCE_LANGUAGE, type SiteLanguage } from './languages'
 
 export type TranslationStatus = 'idle' | 'needs-action' | 'downloading' | 'translating' | 'ready' | 'unsupported' | 'error'
 
-const TEXT_CACHE_VERSION = 'oot-i18n-v3'
+const TEXT_CACHE_VERSION = 'oot-i18n-v4'
 const TRANSLATABLE_ATTRIBUTES = ['placeholder', 'title', 'aria-label', 'alt'] as const
 const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'CODE', 'PRE', 'SVG', 'PATH'])
 const CONCURRENCY = 18
@@ -16,6 +16,7 @@ const lastAppliedAttributes = new WeakMap<Element, Map<string, string>>()
 const translatorPromises = new Map<string, Promise<any>>()
 const inFlightTranslations = new Map<string, Promise<string>>()
 const memoryCaches = new Map<string, Map<string, string>>()
+const preloadPromises = new Map<SiteLanguage, Promise<void>>()
 
 let generation = 0
 let observer: MutationObserver | null = null
@@ -84,6 +85,39 @@ function preserveOuterWhitespace(original: string, translated: string) {
   const leading = original.match(/^\s*/)?.[0] ?? ''
   const trailing = original.match(/\s*$/)?.[0] ?? ''
   return `${leading}${translated}${trailing}`
+}
+
+export function preloadLanguage(language: SiteLanguage = PRELOADED_LANGUAGE) {
+  // Fill the in-memory bundled cache immediately. This is synchronous and
+  // makes the default English UI available before React paints.
+  getCache(language)
+
+  const existing = preloadPromises.get(language)
+  if (existing) return existing
+
+  if (language === 'pt-BR') {
+    const ready = Promise.resolve()
+    preloadPromises.set(language, ready)
+    return ready
+  }
+
+  const promise = checkTranslationAvailability(language)
+    .then(async availability => {
+      if (availability === 'available' || availability === 'downloadable') {
+        try {
+          await prepareTranslator(language)
+        } catch {
+          // The bundled dictionary remains usable even when the browser model
+          // cannot be created without a user gesture.
+        }
+      }
+    })
+    .catch(() => {
+      // Preloading is a performance optimization, never a blocking step.
+    })
+
+  preloadPromises.set(language, promise)
+  return promise
 }
 
 export async function checkTranslationAvailability(language: SiteLanguage) {
@@ -219,7 +253,15 @@ async function translateUniqueStrings(values: string[], language: SiteLanguage) 
   if (!missing.length) return result
 
   const targetLanguage = getLanguageOption(language).translatorCode
-  const translator = await getTranslator(targetLanguage)
+  let translator: any
+  try {
+    translator = await getTranslator(targetLanguage)
+  } catch {
+    // English ships with a large local preload dictionary. If the browser
+    // Translator API is unavailable, keep the bundled translations instead of
+    // throwing and delaying the default experience.
+    return result
+  }
 
   await runWithConcurrency(missing, async value => {
     const translated = await translateOne(value, language, translator)

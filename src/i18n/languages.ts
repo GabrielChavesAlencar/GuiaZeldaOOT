@@ -19,6 +19,7 @@ export const SITE_LANGUAGES: SiteLanguageOption[] = [
 ]
 
 export const DEFAULT_LANGUAGE: SiteLanguage = 'en'
+export const PRELOADED_LANGUAGE: SiteLanguage = 'en'
 export const SOURCE_LANGUAGE = 'pt'
 
 export function getLanguageOption(code: SiteLanguage) {

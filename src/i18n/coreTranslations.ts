@@ -1,8 +1,10 @@
 import type { SiteLanguage } from './languages'
+import { ENGLISH_PRELOAD } from './englishPreload'
 
 type Dictionary = Record<string, string>
 
 const en: Dictionary = {
+  ...ENGLISH_PRELOAD,
   'Ir para o início': 'Go to home',
   'Triforce dourada': 'Golden Triforce',
   'GUIA HYRULE': 'HYRULE GUIDE',
