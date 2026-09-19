@@ -1,6 +1,7 @@
 import { Backpack, Compass, ExternalLink, MapPin, ScrollText, Sparkles, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { ItemEntry } from '../data/items'
+import { itemVisualNotesEn, itemVisualNotesPt } from '../data/visualDescriptions'
 import type { QuestEntry } from '../data/quests'
 import { locations, type MapLocation } from '../data/locations'
 
@@ -38,6 +39,8 @@ export default function ItemDetailModal({ item, fallbackImage, relatedQuests, on
 
   const zeldaDungeonUrl = `https://www.zeldadungeon.net/wiki/${encodeURIComponent(item.pageTitle.replaceAll(' ', '_'))}`
   const fandomUrl = `https://zelda.fandom.com/wiki/${encodeURIComponent(item.pageTitle.replaceAll(' ', '_'))}`
+  const visualNotePt = item.visualNote || itemVisualNotesPt[item.id]
+  const visualNoteEn = itemVisualNotesEn[item.id]
 
   return (
     <div className="detail-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
@@ -67,7 +70,7 @@ export default function ItemDetailModal({ item, fallbackImage, relatedQuests, on
 
         <div className="detail-content">
           {item.visual === 'Remake 2026' && (
-            <div className="item-remake-callout"><Sparkles size={17} /><div><b>Visual atualizado confirmado</b><span>{item.visualNote || 'Este item já apareceu no material oficial do remake de 2026.'}</span></div></div>
+            <div className="item-remake-callout"><Sparkles size={17} /><div><b>Visual atualizado confirmado</b><span>{visualNotePt || 'Este item já apareceu no material oficial do remake de 2026.'}</span></div></div>
           )}
 
           <section className="detail-block">
@@ -84,6 +87,16 @@ export default function ItemDetailModal({ item, fallbackImage, relatedQuests, on
             <h3><Compass size={18} /> Como obter</h3>
             <p>{item.acquisition}</p>
           </section>
+
+          {(visualNotePt || visualNoteEn) && (
+            <section className="detail-block visual-analysis-block">
+              <h3><Sparkles size={18} /> Visual do item / Item visual</h3>
+              <div className="bilingual-copy">
+                {visualNotePt && <div className="lang-chunk"><span className="lang-badge">PT</span><p>{visualNotePt}</p></div>}
+                {visualNoteEn && <div className="lang-chunk"><span className="lang-badge">EN</span><p>{visualNoteEn}</p></div>}
+              </div>
+            </section>
+          )}
 
           <section className="detail-block">
             <h3><MapPin size={18} /> Locais no mapa</h3>

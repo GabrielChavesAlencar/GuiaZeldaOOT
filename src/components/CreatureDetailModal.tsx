@@ -1,6 +1,7 @@
 import { Compass, ExternalLink, MapPin, ShieldCheck, Sparkles, Swords, X } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import type { BestiaryEntry } from '../data/bestiary'
+import { creatureVisualDescriptionsEn, creatureVisualDescriptionsPt } from '../data/visualDescriptions'
 import { findMapLocationsByText } from '../utils/mapNavigation'
 
 type Props = {
@@ -34,6 +35,8 @@ export default function CreatureDetailModal({ creature, fallbackImage, onClose, 
   }, [onClose])
 
   const wikiUrl = `https://zelda.fandom.com/wiki/${encodeURIComponent(creature.pageTitle.replaceAll(' ', '_'))}`
+  const visualDescriptionPt = creature.visualDescription || creatureVisualDescriptionsPt[creature.id]
+  const visualDescriptionEn = creatureVisualDescriptionsEn[creature.id]
 
   return (
     <div className="detail-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
@@ -70,10 +73,13 @@ export default function CreatureDetailModal({ creature, fallbackImage, onClose, 
             <p>{creature.description}</p>
           </section>
 
-          {creature.visualDescription && (
+          {(visualDescriptionPt || visualDescriptionEn) && (
             <section className="detail-block visual-analysis-block">
-              <h3><Sparkles size={18} /> Visual no remake</h3>
-              <p>{creature.visualDescription}</p>
+              <h3><Sparkles size={18} /> Visual no remake / Visual in the remake</h3>
+              <div className="bilingual-copy">
+                {visualDescriptionPt && <div className="lang-chunk"><span className="lang-badge">PT</span><p>{visualDescriptionPt}</p></div>}
+                {visualDescriptionEn && <div className="lang-chunk"><span className="lang-badge">EN</span><p>{visualDescriptionEn}</p></div>}
+              </div>
               {creature.visualSourceUrl && <a href={creature.visualSourceUrl} target="_blank" rel="noreferrer">Ver referência visual <ExternalLink size={14} /></a>}
             </section>
           )}

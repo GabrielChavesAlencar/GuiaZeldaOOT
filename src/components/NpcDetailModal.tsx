@@ -2,6 +2,7 @@ import { Compass, ExternalLink, MapPin, ScrollText, ShieldCheck, Sparkles, UserR
 import { useEffect, useState } from 'react'
 import type { NpcEntry } from '../data/npcs'
 import { getSpoilerFreeNpcBio } from '../data/npcProfiles'
+import { npcVisualDescriptionsEn, npcVisualDescriptionsPt } from '../data/visualDescriptions'
 import type { QuestEntry } from '../data/quests'
 import { findMapLocationsByText } from '../utils/mapNavigation'
 
@@ -37,6 +38,8 @@ export default function NpcDetailModal({ npc, fallbackImage, relatedQuests, onCl
 
   const wikiUrl = `https://zelda.fandom.com/wiki/${encodeURIComponent(npc.pageTitle.replaceAll(' ', '_'))}`
   const mapLocations = findMapLocationsByText(npc.location)
+  const visualDescriptionPt = npc.visualDescription || npcVisualDescriptionsPt[npc.id]
+  const visualDescriptionEn = npcVisualDescriptionsEn[npc.id]
 
   return (
     <div className="detail-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
@@ -72,10 +75,13 @@ export default function NpcDetailModal({ npc, fallbackImage, relatedQuests, onCl
             <div className="spoiler-safe-note">Este texto evita identidades secretas, mudanças de destino, mortes, revelações, chefes e acontecimentos posteriores da campanha.</div>
           </section>
 
-          {npc.visualDescription && (
+          {(visualDescriptionPt || visualDescriptionEn) && (
             <section className="detail-block visual-analysis-block">
-              <h3><Sparkles size={18} /> Visual no remake</h3>
-              <p>{npc.visualDescription}</p>
+              <h3><Sparkles size={18} /> Visual no remake / Visual in the remake</h3>
+              <div className="bilingual-copy">
+                {visualDescriptionPt && <div className="lang-chunk"><span className="lang-badge">PT</span><p>{visualDescriptionPt}</p></div>}
+                {visualDescriptionEn && <div className="lang-chunk"><span className="lang-badge">EN</span><p>{visualDescriptionEn}</p></div>}
+              </div>
               {npc.visualSourceUrl && <a href={npc.visualSourceUrl} target="_blank" rel="noreferrer">Ver referência visual <ExternalLink size={14} /></a>}
             </section>
           )}
