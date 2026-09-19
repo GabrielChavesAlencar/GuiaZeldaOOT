@@ -90,7 +90,7 @@ export default function GoldSkulltulasSection({ entries, onOpenEntry, onFocusLoc
             <MapPinned size={20} />
           </div>
           <div className="skulltula-minimap-wrap">
-            <img src="/hyrule-minimap.png" alt="Minimapa geral de Hyrule" />
+            <img src="/hyrule-map.png" alt="Minimapa geral de Hyrule" />
             {filtered.map(entry => (
               <button
                 key={entry.id}

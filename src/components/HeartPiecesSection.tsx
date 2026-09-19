@@ -90,7 +90,7 @@ export default function HeartPiecesSection({ entries, completed, onToggleComplet
             <MapPinned size={20} />
           </div>
           <div className="heart-minimap-wrap">
-            <img src="/hyrule-minimap.png" alt="Minimapa geral de Hyrule com os Pedaços de Coração" />
+            <img src="/hyrule-map.png" alt="Minimapa geral de Hyrule com os Pedaços de Coração" />
             {filtered.map(entry => (
               <button
                 key={entry.id}
